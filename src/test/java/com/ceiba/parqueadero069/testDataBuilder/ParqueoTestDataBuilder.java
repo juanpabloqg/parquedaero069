@@ -3,8 +3,8 @@ package com.ceiba.parqueadero069.testDataBuilder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import com.ceiba.parqueadero069.model.Parqueo;
-import com.ceiba.parqueadero069.model.Vehiculo;
+import com.ceiba.parqueadero069.domain.Parqueo;
+import com.ceiba.parqueadero069.domain.Vehiculo;
 
 public class ParqueoTestDataBuilder {
 
