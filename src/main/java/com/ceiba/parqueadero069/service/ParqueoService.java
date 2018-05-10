@@ -1,15 +1,18 @@
 package com.ceiba.parqueadero069.service;
 
-import org.springframework.stereotype.Service;
+import java.util.List;
 
 import com.ceiba.parqueadero069.domain.Parqueo;
 
-@Service("parqueoService")
-public class ParqueoService {
+public interface ParqueoService {
 	
-	public String ingresarCarro (Parqueo parqueo) {
-		
-		return "Carro ingresado exitosamente";
-	}
+	public abstract Parqueo addParqueo(Parqueo parqueo);
+	
+	public abstract List<Parqueo> listAllParqueo();
+	
+	public abstract Parqueo findByPlaca(String placa);
+	
+	public abstract void removeParqueo(Parqueo parqueo);
+	
 
 }

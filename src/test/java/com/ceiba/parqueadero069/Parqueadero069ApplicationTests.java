@@ -20,7 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.ceiba.parqueadero069.domain.Parqueo;
 import com.ceiba.parqueadero069.domain.Vehiculo;
-import com.ceiba.parqueadero069.service.ParqueoService;
+import com.ceiba.parqueadero069.service.impl.ParqueoServiceImpl;
 import com.ceiba.parqueadero069.testDataBuilder.ParqueoTestDataBuilder;
 import com.ceiba.parqueadero069.testDataBuilder.VehiculoTestDataBuilder;
 
@@ -47,12 +47,12 @@ public class Parqueadero069ApplicationTests {
 	
 	@Autowired
 	@Qualifier("parqueoService")
-	private ParqueoService parqueoService;
+	private ParqueoServiceImpl parqueoService;
 	
 	@Before
 	public void setup() {
 		
-		parqueoService = Mockito.mock(ParqueoService.class);
+		parqueoService = Mockito.mock(ParqueoServiceImpl.class);
 
 	}
 
