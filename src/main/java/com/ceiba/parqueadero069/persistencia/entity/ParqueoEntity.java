@@ -38,11 +38,11 @@ public class ParqueoEntity {
 		this.idParqueo = idParqueo;
 	}
 
-	public VehiculoEntity getVehiculoModel() {
+	public VehiculoEntity getVehiculo() {
 		return vehiculoEntity;
 	}
 
-	public void setVehiculoModel(VehiculoEntity vehiculoEntity) {
+	public void setVehiculo(VehiculoEntity vehiculoEntity) {
 		this.vehiculoEntity = vehiculoEntity;
 	}
 

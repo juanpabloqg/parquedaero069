@@ -17,7 +17,7 @@ public class Parqueo {
 
 	private static final Integer CAPACIDAD_MAXIMA_MOTOS = 10;
 
-	private Vehiculo vehiculoModel;
+	private Vehiculo vehiculo;
 
 	private LocalDateTime fechaIngreso;
 
@@ -29,17 +29,17 @@ public class Parqueo {
 
 	public Parqueo(Vehiculo vehiculoModel, LocalDateTime fechaIngreso, LocalDateTime fechaRetiro) {
 
-		this.vehiculoModel = vehiculoModel;
+		this.vehiculo = vehiculoModel;
 		this.fechaIngreso = fechaIngreso;
 		this.fechaRetiro = fechaRetiro;
 	}
 
-	public Vehiculo getVehiculoModel() {
-		return vehiculoModel;
+	public Vehiculo getVehiculo() {
+		return vehiculo;
 	}
 
-	public void setVehiculoModel(Vehiculo vehiculoModel) {
-		this.vehiculoModel = vehiculoModel;
+	public void setVehiculo(Vehiculo vehiculoModel) {
+		this.vehiculo = vehiculoModel;
 	}
 
 	public LocalDateTime getFechaIngreso() {

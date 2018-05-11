@@ -34,8 +34,7 @@ public class Parqueadero069ApplicationTests {
 	private static final String PLACA_MOTO = "HLV54D";
 	private static final String FORMATO_FECHA = "yyyy-MM-dd HH:mm:ss";
 	private static final String FECHA_INGRESO = "2018-05-09 08:00:00";
-	private static final String MENSAJE_INGRESO_EXITO_CARRO = "Carro ingresado exitosamente";
-	private static final String MENSAJE_INGRESO_EXITO_MOTO = "Moto ingresada exitosamente";
+	private static final String MENSAJE_INGRESO_EXITOSO = "Vehiculo ingresado exitosamente";
 	
 	private static final Integer VALOR_CARRO_HORA = 1000;
 	private static final Integer VALOR_MOTO_HORA = 500;
@@ -70,14 +69,14 @@ public class Parqueadero069ApplicationTests {
 				
 		//Action
 		Parqueo parqueo = new ParqueoTestDataBuilder().withVehiculo(vehiculo).withFechaIngreso(fechaIngreso).build();
-		Mockito.when(parqueoService.ingresarCarro(parqueo)).thenReturn(MENSAJE_INGRESO_EXITO_CARRO);
+		Mockito.when(parqueoService.ingresarVehiculo(parqueo)).thenReturn(MENSAJE_INGRESO_EXITOSO);
 		
 		
 		//Assert
-		assertEquals(PLACA_CARRO, parqueo.getVehiculoModel().getPlaca());
-		assertEquals(TIPO_VEHICULO_CARRO, parqueo.getVehiculoModel().getTipoVehiculo());		
+		assertEquals(PLACA_CARRO, parqueo.getVehiculo().getPlaca());
+		assertEquals(TIPO_VEHICULO_CARRO, parqueo.getVehiculo().getTipoVehiculo());		
 		assertEquals(fechaIngreso, parqueo.getFechaIngreso());
-		assertEquals(MENSAJE_INGRESO_EXITO_CARRO,parqueoService.ingresarCarro(parqueo));
+		assertEquals(MENSAJE_INGRESO_EXITOSO,parqueoService.ingresarVehiculo(parqueo));
 			
 		
 		
@@ -96,14 +95,14 @@ public class Parqueadero069ApplicationTests {
 				
 		//Action
 		Parqueo parqueo = new ParqueoTestDataBuilder().withVehiculo(vehiculo).withFechaIngreso(fechaIngreso).build();
-		Mockito.when(parqueoService.ingresarCarro(parqueo)).thenReturn(MENSAJE_INGRESO_EXITO_MOTO);
+		Mockito.when(parqueoService.ingresarVehiculo(parqueo)).thenReturn(MENSAJE_INGRESO_EXITOSO);
 		
 		
 		//Assert
-		assertEquals(PLACA_MOTO, parqueo.getVehiculoModel().getPlaca());
-		assertEquals(TIPO_VEHICULO_MOTO, parqueo.getVehiculoModel().getTipoVehiculo());		
+		assertEquals(PLACA_MOTO, parqueo.getVehiculo().getPlaca());
+		assertEquals(TIPO_VEHICULO_MOTO, parqueo.getVehiculo().getTipoVehiculo());		
 		assertEquals(fechaIngreso, parqueo.getFechaIngreso());
-		assertEquals(MENSAJE_INGRESO_EXITO_MOTO,parqueoService.ingresarCarro(parqueo));
+		assertEquals(MENSAJE_INGRESO_EXITOSO,parqueoService.ingresarVehiculo(parqueo));
 			
 		
 		

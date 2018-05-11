@@ -6,13 +6,13 @@ import com.ceiba.parqueadero069.domain.Parqueo;
 
 public interface ParqueoService {
 	
-	public abstract Parqueo addParqueo(Parqueo parqueo);
+	public abstract String ingresarVehiculo(Parqueo parqueo);
 	
-	public abstract List<Parqueo> listAllParqueo();
-	
-	public abstract Parqueo findByPlaca(String placa);
-	
-	public abstract void removeParqueo(Parqueo parqueo);
+//	public abstract List<Parqueo> listAllParqueo();
+//	
+//	public abstract Parqueo findByPlaca(String placa);
+//	
+//	public abstract void removeParqueo(Parqueo parqueo);
 	
 
 }
