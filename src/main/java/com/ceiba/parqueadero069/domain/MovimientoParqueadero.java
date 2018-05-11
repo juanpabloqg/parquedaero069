@@ -3,7 +3,7 @@ package com.ceiba.parqueadero069.domain;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-public class Parqueo {
+public class MovimientoParqueadero {
 
 	private static final Integer VALOR_CARRO_HORA = 1000;
 
@@ -23,11 +23,11 @@ public class Parqueo {
 
 	private LocalDateTime fechaRetiro;
 
-	public Parqueo() {
+	public MovimientoParqueadero() {
 		
 	}
 
-	public Parqueo(Vehiculo vehiculoModel, LocalDateTime fechaIngreso, LocalDateTime fechaRetiro) {
+	public MovimientoParqueadero(Vehiculo vehiculoModel, LocalDateTime fechaIngreso, LocalDateTime fechaRetiro) {
 
 		this.vehiculo = vehiculoModel;
 		this.fechaIngreso = fechaIngreso;
@@ -38,8 +38,8 @@ public class Parqueo {
 		return vehiculo;
 	}
 
-	public void setVehiculo(Vehiculo vehiculoModel) {
-		this.vehiculo = vehiculoModel;
+	public void setVehiculo(Vehiculo vehiculo) {
+		this.vehiculo = vehiculo;
 	}
 
 	public LocalDateTime getFechaIngreso() {

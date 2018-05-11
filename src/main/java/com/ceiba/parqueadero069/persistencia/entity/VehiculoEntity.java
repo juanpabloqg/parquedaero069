@@ -56,7 +56,9 @@ public class VehiculoEntity {
 	}	
 	
 	
-	
+	public VehiculoEntity() {
+		idVehiculo = Integer.valueOf(0);
+	}
 	
 	
 	

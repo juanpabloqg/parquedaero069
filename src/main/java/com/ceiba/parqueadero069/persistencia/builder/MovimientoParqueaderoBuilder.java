@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import com.ceiba.parqueadero069.domain.Parqueo;
-import com.ceiba.parqueadero069.persistencia.entity.ParqueoEntity;
+import com.ceiba.parqueadero069.domain.MovimientoParqueadero;
+import com.ceiba.parqueadero069.persistencia.entity.MovimientoParqueaderoEntity;
 
-@Component("parqueoBuilder")
-public class ParqueoBuilder {
+@Component("movimientoParqueaderoBuilder")
+public class MovimientoParqueaderoBuilder {
 	
 	@Autowired
 	@Qualifier("vehiculoBuilder")
@@ -20,9 +20,9 @@ public class ParqueoBuilder {
 	 * @param vehiculo
 	 * @return
 	 */
-	public ParqueoEntity converterParqueo2ParqueoEntity(Parqueo parqueo) {
+	public MovimientoParqueaderoEntity converterParqueo2ParqueoEntity(MovimientoParqueadero parqueo) {
 		
-		ParqueoEntity parqueoEntity = new ParqueoEntity();
+		MovimientoParqueaderoEntity parqueoEntity = new MovimientoParqueaderoEntity();
 		parqueoEntity.setFechaIngreso(parqueo.getFechaIngreso());
 		parqueoEntity.setFechaRetiro(parqueo.getFechaRetiro());
 		parqueoEntity.setVehiculo(vehiculoBuilder.converterVehiculo2VehiculoEntity(parqueo.getVehiculo()));
@@ -36,9 +36,9 @@ public class ParqueoBuilder {
 	 * @param vehiculoEntity
 	 * @return
 	 */
-	public Parqueo convertParqueoEntity2Parqueo(ParqueoEntity parqueoEntity) {
+	public MovimientoParqueadero convertParqueoEntity2Parqueo(MovimientoParqueaderoEntity parqueoEntity) {
 		
-		Parqueo parqueo = new Parqueo();
+		MovimientoParqueadero parqueo = new MovimientoParqueadero();
 		parqueo.setFechaIngreso(parqueoEntity.getFechaIngreso());
 		parqueo.setFechaRetiro(parqueoEntity.getFechaRetiro());
 		parqueo.setVehiculo(vehiculoBuilder.convertVehiculoEntity2Vehiculo(parqueoEntity.getVehiculo()));

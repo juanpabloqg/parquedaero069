@@ -2,6 +2,7 @@ package com.ceiba.parqueadero069.domain;
 
 public class Vehiculo {
 	
+	
 	private String tipoVehiculo;
 	private String placa;
 	private Integer cilindraje;	
@@ -33,7 +34,7 @@ public class Vehiculo {
 		this.placa = placa;
 	}
 
-	public int getCilindraje() {
+	public Integer getCilindraje() {
 		return cilindraje;
 	}
 
