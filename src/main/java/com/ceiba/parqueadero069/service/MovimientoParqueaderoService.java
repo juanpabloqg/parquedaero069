@@ -14,7 +14,7 @@ public interface MovimientoParqueaderoService {
 	
 	public abstract MovimientoParqueadero findByPlaca(String placa);
 	
-	public abstract void verificarLetrasPlaca(MovimientoParqueadero movimientoParqueadero);
+	public abstract void verificarDisponibilidadPorInicioLetrasPlaca(MovimientoParqueadero movimientoParqueadero);
 	
 
 	

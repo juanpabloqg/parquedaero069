@@ -47,7 +47,7 @@ public class MovimientoParqueaderoServiceImpl implements MovimientoParqueaderoSe
 		
 		verificarDisponibilidadParqueaderos(movimientoParqueadero.getVehiculo().getTipoVehiculo());
 		
-		verificarLetrasPlaca(movimientoParqueadero);
+		verificarDisponibilidadPorInicioLetrasPlaca(movimientoParqueadero);
 		
 		
 		movimientoParqueaderoRepository.save(movimientoParqueaderoBuilder.converterParqueo2ParqueoEntity(movimientoParqueadero));
@@ -106,7 +106,7 @@ public class MovimientoParqueaderoServiceImpl implements MovimientoParqueaderoSe
 
 
 	@Override
-	public void verificarLetrasPlaca(MovimientoParqueadero movimientoParqueadero) {
+	public void verificarDisponibilidadPorInicioLetrasPlaca(MovimientoParqueadero movimientoParqueadero) {
 		
 		if (movimientoParqueadero.getVehiculo().getPlaca().charAt(0) == 'A') {
 			

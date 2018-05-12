@@ -15,6 +15,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -39,9 +40,11 @@ public class VigilanteParqueaderoTest {
 	private static final String TIPO_VEHICULO_CARRO = "CARRO";
 	private static final String TIPO_VEHICULO_MOTO = "MOTO";
 	private static final String PLACA_CARRO = "HMV545";
+	private static final String PLACA_CARRO_INICIA_CON_A = "AAA545";
 	private static final String PLACA_MOTO = "HLV54D";
 	private static final String FORMATO_FECHA = "yyyy-MM-dd HH:mm:ss";
 	private static final String FECHA_INGRESO = "2018-05-09 08:00:00";
+	private static final String FECHA_INGRESO_NO_LUNES_NO_DOMINGO = "2018-05-09 08:00:00";
 	private static final String MENSAJE_INGRESO_EXITOSO = "Vehiculo ingresado exitosamente";
 	private static final String MENSAJE_NO_DISPONIBILIDAD_PARQUEO = "No hay mas capacidad en el paqueadero";
 	
@@ -78,21 +81,22 @@ public class VigilanteParqueaderoTest {
 		
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(FORMATO_FECHA);
 
-		LocalDateTime fechaIngreso = LocalDateTime.parse(FECHA_INGRESO, dateTimeFormatter);		
+		LocalDateTime fechaIngreso = LocalDateTime.parse(FECHA_INGRESO, dateTimeFormatter);	
+		
+		MovimientoParqueadero parqueo = new MovimientoParqueaderoTestDataBuilder().withVehiculo(vehiculo).withFechaIngreso(fechaIngreso).build();
 		
 				
 		//Action
-		MovimientoParqueadero parqueo = new MovimientoParqueaderoTestDataBuilder().withVehiculo(vehiculo).withFechaIngreso(fechaIngreso).build();
+		
 		Mockito.when(movimientoParqueaderoService.ingresarVehiculo(parqueo)).thenReturn(MENSAJE_INGRESO_EXITOSO);
 		
+		String mensajeRespuesta = movimientoParqueaderoService.ingresarVehiculo(parqueo);
 		
 		//Assert
 		assertEquals(PLACA_CARRO, parqueo.getVehiculo().getPlaca());
 		assertEquals(TIPO_VEHICULO_CARRO, parqueo.getVehiculo().getTipoVehiculo());		
 		assertEquals(fechaIngreso, parqueo.getFechaIngreso());
-		assertEquals(MENSAJE_INGRESO_EXITOSO,movimientoParqueaderoService.ingresarVehiculo(parqueo));
-			
-		
+		assertEquals(MENSAJE_INGRESO_EXITOSO,mensajeRespuesta);		
 		
 	}
 	
@@ -117,8 +121,6 @@ public class VigilanteParqueaderoTest {
 		assertEquals(TIPO_VEHICULO_MOTO, parqueo.getVehiculo().getTipoVehiculo());		
 		assertEquals(fechaIngreso, parqueo.getFechaIngreso());
 		assertEquals(MENSAJE_INGRESO_EXITOSO,movimientoParqueaderoService.ingresarVehiculo(parqueo));
-			
-		
 		
 	}
 	
@@ -132,8 +134,133 @@ public class VigilanteParqueaderoTest {
 		try {
 			
 			Mockito.doThrow(new MovimientoParqueaderoException(MENSAJE_NO_DISPONIBILIDAD_PARQUEO))
-			.when(movimientoParqueaderoService)
+				.when(movimientoParqueaderoService)
 				.verificarDisponibilidadParqueaderos(MovimientoParqueaderoConstant.TIPO_VEHICULO_CARRO);
+			
+			movimientoParqueaderoService.verificarDisponibilidadParqueaderos(TIPO_VEHICULO_CARRO);
+			fail();
+			
+			
+		} catch (MovimientoParqueaderoException e) {
+			// assert
+			Assert.assertEquals(MovimientoParqueaderoConstant.MENSAJE_NO_DISPONIBILIDAD_PARQUEO, e.getMessage());
+		}
+		
+	}
+	
+	
+	@Test
+	public void ingresaMotoSinDisponibilidadMasde10() {
+		
+		//Arrange		
+				
+		//Action
+				
+		try {
+			
+			Mockito.doThrow(new MovimientoParqueaderoException(MENSAJE_NO_DISPONIBILIDAD_PARQUEO))
+			.when(movimientoParqueaderoService)
+				.verificarDisponibilidadParqueaderos(MovimientoParqueaderoConstant.TIPO_VEHICULO_MOTO);
+			
+			movimientoParqueaderoService.verificarDisponibilidadParqueaderos(MovimientoParqueaderoConstant.TIPO_VEHICULO_MOTO);
+			fail();
+			
+			
+		} catch (MovimientoParqueaderoException e) {
+			// assert
+			Assert.assertEquals(MovimientoParqueaderoConstant.MENSAJE_NO_DISPONIBILIDAD_PARQUEO, e.getMessage());
+		}
+		
+	}
+	
+	@Test
+	public void ingresaCarroSinDisponibilidadMasde20_() {
+		
+		//Arrange	
+		
+		int cantidadCarros = 0;
+		
+		//Action
+				
+		try {
+						
+			Mockito.when(movimientoParqueaderoRepository.countVehiculos(TIPO_VEHICULO_CARRO)).thenReturn(20);
+			
+			cantidadCarros = movimientoParqueaderoRepository.countVehiculos(TIPO_VEHICULO_CARRO);
+			
+			Mockito.doThrow(new MovimientoParqueaderoException(MENSAJE_NO_DISPONIBILIDAD_PARQUEO))
+				.when(movimientoParqueaderoService)
+				.verificarDisponibilidadParqueaderos(MovimientoParqueaderoConstant.TIPO_VEHICULO_CARRO);
+			
+			movimientoParqueaderoService.verificarDisponibilidadParqueaderos(TIPO_VEHICULO_CARRO);
+			
+			fail();
+			
+			
+		} catch (MovimientoParqueaderoException e) {
+			// assert
+			
+			Assert.assertEquals(20, cantidadCarros);
+			Assert.assertEquals(MovimientoParqueaderoConstant.MENSAJE_NO_DISPONIBILIDAD_PARQUEO, e.getMessage());
+		}
+		
+		
+		
+	}
+	
+	@Test
+	public void ingresaMotoSinDisponibilidadMasde10_() {
+		
+		//Arrange
+		
+		int cantidadMotos = 0;
+				
+		//Action
+				
+		try {
+			
+			Mockito.when(movimientoParqueaderoRepository.countVehiculos(TIPO_VEHICULO_MOTO)).thenReturn(10);
+			
+			Mockito.doThrow(new MovimientoParqueaderoException(MENSAJE_NO_DISPONIBILIDAD_PARQUEO))
+			.when(movimientoParqueaderoService)
+				.verificarDisponibilidadParqueaderos(MovimientoParqueaderoConstant.TIPO_VEHICULO_MOTO);
+			
+			movimientoParqueaderoService.verificarDisponibilidadParqueaderos(MovimientoParqueaderoConstant.TIPO_VEHICULO_MOTO);
+			
+			fail();
+			
+			
+		} catch (MovimientoParqueaderoException e) {
+			// assert
+			Assert.assertEquals(10, cantidadMotos);
+			Assert.assertEquals(MovimientoParqueaderoConstant.MENSAJE_NO_DISPONIBILIDAD_PARQUEO, e.getMessage());
+		}
+		
+	}
+	
+	@Test
+	public void ingresa_carro_inicioPlaca_con_A_no_domingo_o_lunes() {
+		
+		//Arrange
+		
+		Vehiculo vehiculo = new VehiculoTestDataBuilder().withTipoVehiculo(TIPO_VEHICULO_CARRO).withPlaca(PLACA_CARRO_INICIA_CON_A).build();
+		
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(FORMATO_FECHA);
+
+		LocalDateTime fechaIngreso = LocalDateTime.parse(FECHA_INGRESO_NO_LUNES_NO_DOMINGO, dateTimeFormatter);	
+		
+		MovimientoParqueadero parqueo = new MovimientoParqueaderoTestDataBuilder().withVehiculo(vehiculo).withFechaIngreso(fechaIngreso).build();
+		
+				
+		//Action
+				
+		try {			
+			
+			Mockito.doThrow(new MovimientoParqueaderoException(MovimientoParqueaderoConstant.MENSAJE_ERROR_INGRESO_VEHICULO_PLACA_INICIA_A))
+			.when(movimientoParqueaderoService)
+				.verificarDisponibilidadPorInicioLetrasPlaca(parqueo);
+			
+			movimientoParqueaderoService.verificarDisponibilidadPorInicioLetrasPlaca(parqueo);
 			
 			fail();
 			
@@ -144,6 +271,41 @@ public class VigilanteParqueaderoTest {
 		}
 		
 	}
+	
+	@Test
+	public void ingresa_moto_inicioPlaca_con_A_no_domingo_o_lunes() {
+		
+		//Arrange
+		
+		Vehiculo vehiculo = new VehiculoTestDataBuilder().withTipoVehiculo(TIPO_VEHICULO_MOTO).withPlaca(PLACA_CARRO_INICIA_CON_A).build();
+		
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(FORMATO_FECHA);
+
+		LocalDateTime fechaIngreso = LocalDateTime.parse(FECHA_INGRESO_NO_LUNES_NO_DOMINGO, dateTimeFormatter);	
+		
+		MovimientoParqueadero parqueo = new MovimientoParqueaderoTestDataBuilder().withVehiculo(vehiculo).withFechaIngreso(fechaIngreso).build();
+		
+				
+		//Action
+				
+		try {			
+			
+			Mockito.doThrow(new MovimientoParqueaderoException(MovimientoParqueaderoConstant.MENSAJE_ERROR_INGRESO_VEHICULO_PLACA_INICIA_A))
+			.when(movimientoParqueaderoService)
+				.verificarDisponibilidadPorInicioLetrasPlaca(parqueo);
+			
+			movimientoParqueaderoService.verificarDisponibilidadPorInicioLetrasPlaca(parqueo);
+			
+			fail();
+			
+			
+		} catch (MovimientoParqueaderoException e) {
+			// assert
+			Assert.assertEquals(MovimientoParqueaderoConstant.MENSAJE_NO_DISPONIBILIDAD_PARQUEO, e.getMessage());
+		}
+		
+	}
+	
 	
 	
 	
