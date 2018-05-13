@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.DayOfWeek;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -91,8 +92,8 @@ public class MovimientoParqueaderoServiceImpl implements MovimientoParqueaderoSe
 	
 
 	@Override
-	public MovimientoParqueadero findByPlaca(String placa) {
-		MovimientoParqueaderoEntity movimientoParqueaderoEntity = movimientoParqueaderoRepository.findByPlaca(placa);
+	public MovimientoParqueadero obtenerVehiculoParqueadoPorPlaca(String placa) {
+		MovimientoParqueaderoEntity movimientoParqueaderoEntity = movimientoParqueaderoRepository.obtenerVehiculoParqueadoPorPlaca(placa);
 		return movimientoParqueaderoBuilder.convertParqueoEntity2Parqueo(movimientoParqueaderoEntity);
 	}
 
@@ -107,15 +108,27 @@ public class MovimientoParqueaderoServiceImpl implements MovimientoParqueaderoSe
 
 	@Override
 	public void verificarDisponibilidadPorInicioLetrasPlaca(MovimientoParqueadero movimientoParqueadero) {
-		
+
 		if (movimientoParqueadero.getVehiculo().getPlaca().charAt(0) == 'A') {
-			
-			if( ! movimientoParqueadero.getFechaIngreso().getDayOfWeek().equals(DayOfWeek.SUNDAY)
-						|| ! movimientoParqueadero.getFechaIngreso().getDayOfWeek().equals(DayOfWeek.MONDAY)) {
-				throw new MovimientoParqueaderoException(MovimientoParqueaderoConstant.MENSAJE_ERROR_INGRESO_VEHICULO_PLACA_INICIA_A);
+
+			if (!movimientoParqueadero.getFechaIngreso().getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
+				if (movimientoParqueadero.getFechaIngreso().getDayOfWeek().equals(DayOfWeek.MONDAY)) {
+					throw new MovimientoParqueaderoException(
+							MovimientoParqueaderoConstant.MENSAJE_ERROR_INGRESO_VEHICULO_PLACA_INICIA_A);
+				}
 			}
 		}
+
+	}
+
+
+
+	@Override
+	public boolean esParqueado(String placa) {
 		
+		return Optional
+				.ofNullable(movimientoParqueaderoRepository.obtenerVehiculoParqueadoPorPlaca(placa))
+				.isPresent();
 	}
 	
 	

@@ -18,7 +18,7 @@ public interface MovimientoParqueaderoRepository extends JpaRepository<Movimient
 	public Integer countVehiculos(@Param("tipoVehiculo") String tipoVehiculo);
 	
 	@Query("SELECT m FROM movimiento_parqueadero m WHERE m.vehiculoEntity.placa = :placa")
-	public MovimientoParqueaderoEntity findByPlaca(@Param("placa") String placa);
+	public MovimientoParqueaderoEntity obtenerVehiculoParqueadoPorPlaca(@Param("placa") String placa);
 	
 	
 	

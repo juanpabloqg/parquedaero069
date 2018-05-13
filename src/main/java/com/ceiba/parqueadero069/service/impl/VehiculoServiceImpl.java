@@ -53,10 +53,4 @@ public class VehiculoServiceImpl implements VehiculoService {
 		
 	}
 
-
-
-	
-
-	
-
 }
