@@ -20,7 +20,7 @@ import com.ceiba.parqueadero069.constantes.MovimientoParqueaderoConstant;
 import com.ceiba.parqueadero069.domain.MovimientoParqueadero;
 import com.ceiba.parqueadero069.domain.Vehiculo;
 import com.ceiba.parqueadero069.persistencia.repository.MovimientoParqueaderoRepository;
-import com.ceiba.parqueadero069.persistencia.sistema.SistemaPersistencia;
+
 import com.ceiba.parqueadero069.service.MovimientoParqueaderoService;
 import com.ceiba.parqueadero069.testDataBuilder.MovimientoParqueaderoTestDataBuilder;
 import com.ceiba.parqueadero069.testDataBuilder.VehiculoTestDataBuilder;
@@ -34,7 +34,7 @@ public class VigilanteParquederoTest {
 	@Qualifier("movimientoParqueaderoService")
 	private MovimientoParqueaderoService movimientoParqueaderoService;
 	
-	private SistemaPersistencia sistenaPersistencia;
+	
 	
 	
 	
