@@ -108,7 +108,7 @@ public class MovimientoParqueaderoServiceImpl implements MovimientoParqueaderoSe
 				.ofNullable(obtenerVehiculoParqueadoPorPlaca(placa))
 				.orElseThrow(() -> new MovimientoParqueaderoException(MovimientoParqueaderoConstant.MENSAJE_ERRRO_VEHICULO_NO_EXISTE));
 		
-		MovimientoParqueadero movimientoParqueadero = calcularCobroVehículo(movimientoParqueaderoBuilder
+		MovimientoParqueadero movimientoParqueadero = calcularCobroVehiculo(movimientoParqueaderoBuilder
 															.convertParqueoEntity2Parqueo(movimientoParqueaderoEntity),fechaRetiro);
 		
 		movimientoParqueaderoEntity.setEstado( movimientoParqueadero.getEstado());
@@ -164,7 +164,7 @@ public class MovimientoParqueaderoServiceImpl implements MovimientoParqueaderoSe
 //				.until(LocalDateTime.now(), ChronoUnit.MINUTES))/60;
 //	}
 	
-	private MovimientoParqueadero calcularCobroVehículo(MovimientoParqueadero movimientoParqueadero, LocalDateTime fechaRetiro) {
+	private MovimientoParqueadero calcularCobroVehiculo(MovimientoParqueadero movimientoParqueadero, LocalDateTime fechaRetiro) {
 		
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(MovimientoParqueaderoConstant.FORMATO_FECHA);
 		
