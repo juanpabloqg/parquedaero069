@@ -14,7 +14,7 @@ public interface MovimientoParqueaderoService {
 	
 	public abstract String retirarVehiculo(String placa,  LocalDateTime fechaRetiro);
 	
-	public abstract MovimientoParqueaderoEntity obtenerVehiculoParqueadoPorPlaca(String placa);
+	public abstract MovimientoParqueaderoEntity obtenerVehiculoParqueadoPorPlacaEntity(String placa);
 	
 	public abstract MovimientoParqueaderoEntity obtenerRetiradoParqueadoPorPlaca(String placa);
 	

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.ceiba.parqueadero069.constantes.MovimientoParqueaderoConstant;
 import com.ceiba.parqueadero069.domain.MovimientoParqueadero;
+import com.ceiba.parqueadero069.domain.Vehiculo;
 import com.ceiba.parqueadero069.exception.MovimientoParqueaderoException;
 import com.ceiba.parqueadero069.persistencia.builder.MovimientoParqueaderoBuilder;
 import com.ceiba.parqueadero069.persistencia.builder.VehiculoBuilder;
@@ -93,29 +94,30 @@ public class MovimientoParqueaderoServiceImpl implements MovimientoParqueaderoSe
 		
 	}
 	
-	
+	public MovimientoParqueadero obtenerVehiculoParqueadoPorPlaca( String placa) {
+		return movimientoParqueaderoBuilder.convertParqueoEntity2Parqueo( obtenerVehiculoParqueadoPorPlacaEntity(placa)  );
+	}
 
 	@Override
-	public MovimientoParqueaderoEntity obtenerVehiculoParqueadoPorPlaca(String placa) {
-		MovimientoParqueaderoEntity movimientoParqueaderoEntity = movimientoParqueaderoRepository.obtenerVehiculoParqueadoPorPlaca(placa);
-		return movimientoParqueaderoEntity;
+	public MovimientoParqueaderoEntity obtenerVehiculoParqueadoPorPlacaEntity(String placa) {
+		return movimientoParqueaderoRepository.obtenerVehiculoParqueadoPorPlaca(placa);
 	}
 
 	@Override
 	public String retirarVehiculo(String placa, LocalDateTime fechaRetiro) throws MovimientoParqueaderoException {
 		
-		MovimientoParqueaderoEntity movimientoParqueaderoEntity = Optional
+		MovimientoParqueadero movimientoParqueadero = Optional
 				.ofNullable(obtenerVehiculoParqueadoPorPlaca(placa))
 				.orElseThrow(() -> new MovimientoParqueaderoException(MovimientoParqueaderoConstant.MENSAJE_ERRRO_VEHICULO_NO_EXISTE));
 		
-		MovimientoParqueadero movimientoParqueadero = calcularCobroVehiculo(movimientoParqueaderoBuilder
-															.convertParqueoEntity2Parqueo(movimientoParqueaderoEntity),fechaRetiro);
+		movimientoParqueadero.setFechaRetiro(fechaRetiro);
 		
-		movimientoParqueaderoEntity.setEstado( movimientoParqueadero.getEstado());
-		movimientoParqueaderoEntity.setFechaRetiro(movimientoParqueadero.getFechaRetiro());
-		movimientoParqueaderoEntity.setValorCobrado(movimientoParqueadero.getValorCobrado());
+		BigDecimal valorCobrado = calcularCobroVehiculo( movimientoParqueadero.getVehiculo(), movimientoParqueadero.getFechaIngreso(), movimientoParqueadero.getFechaRetiro() );
 		
-		movimientoParqueaderoRepository.save(movimientoParqueaderoEntity);
+		movimientoParqueadero.setEstado( MovimientoParqueaderoConstant.ESTADO_RETIRADO );
+		movimientoParqueadero.setValorCobrado( valorCobrado );
+		
+		movimientoParqueaderoRepository.save( movimientoParqueaderoBuilder.converterParqueo2ParqueoEntity(movimientoParqueadero) );
 		
 		return MovimientoParqueaderoConstant.MENSAJE_RETIRO_VEHICULO_EXITOSO;
 		
@@ -126,19 +128,16 @@ public class MovimientoParqueaderoServiceImpl implements MovimientoParqueaderoSe
 	@Override
 	public void verificarDisponibilidadPorInicioLetrasPlaca(MovimientoParqueadero movimientoParqueadero) {
 
-		if (movimientoParqueadero.getVehiculo().getPlaca().charAt(0) == 'A') {
-
-			if (!movimientoParqueadero.getFechaIngreso().getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
-				if (!movimientoParqueadero.getFechaIngreso().getDayOfWeek().equals(DayOfWeek.MONDAY)) {
-					throw new MovimientoParqueaderoException(
-							MovimientoParqueaderoConstant.MENSAJE_ERROR_INGRESO_VEHICULO_PLACA_INICIA_A);
-				}
-			}
+		if (movimientoParqueadero.getVehiculo().getPlaca().charAt(0) == 'A' && !esDomingoLunes(movimientoParqueadero) ) {
+			throw new MovimientoParqueaderoException(
+					MovimientoParqueaderoConstant.MENSAJE_ERROR_INGRESO_VEHICULO_PLACA_INICIA_A);
 		}
 
 	}
 
-
+	private boolean esDomingoLunes(MovimientoParqueadero movimientoParqueadero) {
+		return movimientoParqueadero.getFechaIngreso().getDayOfWeek().equals(DayOfWeek.SUNDAY) || movimientoParqueadero.getFechaIngreso().getDayOfWeek().equals(DayOfWeek.MONDAY);
+	}
 
 
 	@Override
@@ -150,126 +149,89 @@ public class MovimientoParqueaderoServiceImpl implements MovimientoParqueaderoSe
 	}
 	
 	
-//	private double calcularDiasParqueado(MovimientoParqueadero movimientoParqueadero) {
-//
-//		return (double)(movimientoParqueadero.getFechaIngreso()
-//				.until(LocalDateTime.now(), ChronoUnit.MINUTES))/60/24;
-//	}
-//	
-//	private double calcularHorasParqueado(MovimientoParqueadero movimientoParqueadero) {
-//		
-//		
-//
-//		return (double)(movimientoParqueadero.getFechaIngreso()
-//				.until(LocalDateTime.now(), ChronoUnit.MINUTES))/60;
-//	}
+
 	
-	private MovimientoParqueadero calcularCobroVehiculo(MovimientoParqueadero movimientoParqueadero, LocalDateTime fechaRetiro) {
+	private BigDecimal calcularCobroVehiculo(Vehiculo vehiculo, LocalDateTime fechaIngreso, LocalDateTime fechaRetiro) {
 		
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(MovimientoParqueaderoConstant.FORMATO_FECHA);
+		Duration duration = Duration.between(fechaIngreso, fechaRetiro);
+		double cantidadHorasParqueado = (((double)duration.toMinutes())/60);
 		
-		Duration duration = Duration.between(movimientoParqueadero.getFechaIngreso(), fechaRetiro);
-		double cantidadHorasParqueado = (((double)duration.toMinutes())/60);		
+		BigDecimal valorCobrado = BigDecimal.ZERO;
+		
 		
 		if (cantidadHorasParqueado > MovimientoParqueaderoConstant.CANTIDAD_HORAS_LIMITE_VEHICULO) {
 			
-			cobrarPorDias(movimientoParqueadero, fechaRetiro, cantidadHorasParqueado);			
+			valorCobrado = cobrarPorDias(vehiculo, cantidadHorasParqueado);			
 			
 		}else {
 			
-			cobrarPorHoras(movimientoParqueadero, fechaRetiro, cantidadHorasParqueado);
+			valorCobrado = cobrarPorHoras(vehiculo.getTipoVehiculo(), cantidadHorasParqueado);
 			
 		}
 		
-		return movimientoParqueadero;
+		return valorCobrado;
 		
 	}
 
 
 
-	private void cobrarPorHoras(MovimientoParqueadero movimientoParqueadero, LocalDateTime fechaRetiro, double cantidadHorasParqueado) {
+	private BigDecimal cobrarPorHoras(String tipoVehiculo, double cantidadHorasParqueado) {
 		
-		if(movimientoParqueadero.getVehiculo().getTipoVehiculo().equals(MovimientoParqueaderoConstant.TIPO_VEHICULO_CARRO)) {
+		if(tipoVehiculo.equals(MovimientoParqueaderoConstant.TIPO_VEHICULO_CARRO)) {
+			return  calculaHoraPorTipoVehiculo(cantidadHorasParqueado, MovimientoParqueaderoConstant.VALOR_CARRO_HORA);
 			
-			BigDecimal valorCobrado = new BigDecimal((cantidadHorasParqueado) * MovimientoParqueaderoConstant.VALOR_CARRO_HORA);
-			
-			movimientoParqueadero.setValorCobrado(valorCobrado);
-			movimientoParqueadero.setFechaRetiro(fechaRetiro);
-			movimientoParqueadero.setEstado(MovimientoParqueaderoConstant.ESTADO_RETIRADO);
-			
-		}else if(movimientoParqueadero.getVehiculo().getTipoVehiculo().equals(MovimientoParqueaderoConstant.TIPO_VEHICULO_MOTO)){
-			
-			BigDecimal valorCobrado = new BigDecimal((cantidadHorasParqueado) * MovimientoParqueaderoConstant.VALOR_CARRO_HORA);
-			
-			movimientoParqueadero.setValorCobrado(cobrarVehiculoTipoMotoPorHoras(movimientoParqueadero,valorCobrado));
-			movimientoParqueadero.setFechaRetiro(fechaRetiro);
-			movimientoParqueadero.setEstado(MovimientoParqueaderoConstant.ESTADO_RETIRADO);
-			
+		}else {
+			return calculaHoraPorTipoVehiculo(cantidadHorasParqueado, MovimientoParqueaderoConstant.VALOR_MOTO_HORA);
 		}
 		
 	}
 
-	private void cobrarPorDias(MovimientoParqueadero movimientoParqueadero, LocalDateTime fechaRetiro, double cantidadHorasParqueado) {
-		if(movimientoParqueadero.getVehiculo().getTipoVehiculo().equals(MovimientoParqueaderoConstant.TIPO_VEHICULO_CARRO)) {
-			if (cantidadHorasParqueado > 24) {
-				BigDecimal cantidadDiasTotales = new BigDecimal((cantidadHorasParqueado / 24));
-				BigInteger parteEnteraDiasTotales = cantidadDiasTotales.toBigInteger();
-				BigDecimal parteFraccionDiasTotales = cantidadDiasTotales.remainder(BigDecimal.ONE);
-				
-				BigDecimal valorCobrado = new BigDecimal(parteEnteraDiasTotales.intValue() * MovimientoParqueaderoConstant.VALOR_DIA_CARRO);
-				
-				double horasRestantesPorCobrar = parteFraccionDiasTotales.multiply(new BigDecimal(24)).doubleValue();
-				
-				valorCobrado = valorCobrado.add(new BigDecimal(horasRestantesPorCobrar * MovimientoParqueaderoConstant.VALOR_CARRO_HORA));
+	private BigDecimal calculaHoraPorTipoVehiculo(double cantidadHorasParqueado, Integer valorPorTipoVehiculo) {
+		return BigDecimal.valueOf((cantidadHorasParqueado) * valorPorTipoVehiculo);
+	}
+
+	private BigDecimal cobrarPorDias(Vehiculo vehiculo, double cantidadHorasParqueado) {
+		BigDecimal valorCobrado = BigDecimal.ZERO;
+		
+		if(vehiculo.getTipoVehiculo().equals(MovimientoParqueaderoConstant.TIPO_VEHICULO_CARRO)) {
+			valorCobrado = calcularCobroPorDias(vehiculo.getCilindraje(), cantidadHorasParqueado, MovimientoParqueaderoConstant.VALOR_DIA_CARRO, MovimientoParqueaderoConstant.VALOR_CARRO_HORA);
+		}else if(vehiculo.getTipoVehiculo().equals(MovimientoParqueaderoConstant.TIPO_VEHICULO_MOTO)){
+			valorCobrado = calcularCobroPorDias(vehiculo.getCilindraje(), cantidadHorasParqueado, MovimientoParqueaderoConstant.VALOR_DIA_MOTO, MovimientoParqueaderoConstant.VALOR_MOTO_HORA);
+		}
+		
+		return valorCobrado;
+	}
+
+	private BigDecimal calcularCobroPorDias(Integer cilindraje, double cantidadHorasParqueado, Integer valorDia, Integer valorHora) {
+		BigDecimal valorCobrado = BigDecimal.ZERO;
+		
+		if (cantidadHorasParqueado > 24) {
+		
+			BigDecimal cantidadDiasTotales =  BigDecimal.valueOf((cantidadHorasParqueado / 24));
+			Integer parteEnteraDiasTotales = cantidadDiasTotales.intValue();
+			BigDecimal parteFraccionDiasTotales = cantidadDiasTotales.remainder(BigDecimal.ONE);
+			
+			valorCobrado =  BigDecimal.valueOf( parteEnteraDiasTotales.longValue() * valorDia.longValue());
+			
+			double horasRestantesPorCobrar = parteFraccionDiasTotales.multiply(new BigDecimal(24)).doubleValue();
+			
+			valorCobrado = valorCobrado.add( BigDecimal.valueOf(horasRestantesPorCobrar * valorHora));
 						
-				
-				movimientoParqueadero.setValorCobrado(valorCobrado);
-				
-			}else {
-				
-				movimientoParqueadero.setValorCobrado(new BigDecimal(MovimientoParqueaderoConstant.VALOR_DIA_CARRO));
-			}
+		}else {
 			
-			movimientoParqueadero.setFechaRetiro(fechaRetiro);
-			movimientoParqueadero.setEstado(MovimientoParqueaderoConstant.ESTADO_RETIRADO);
-			
-		}else if(movimientoParqueadero.getVehiculo().getTipoVehiculo().equals(MovimientoParqueaderoConstant.TIPO_VEHICULO_MOTO)){
-			
-			if (cantidadHorasParqueado > 24) {
-			
-				BigDecimal cantidadDiasTotales = new BigDecimal((cantidadHorasParqueado / 24));
-				BigInteger parteEnteraDiasTotales = cantidadDiasTotales.toBigInteger();
-				BigDecimal parteFraccionDiasTotales = cantidadDiasTotales.remainder(BigDecimal.ONE);
-				
-				BigDecimal valorCobrado = new BigDecimal(parteEnteraDiasTotales.intValue() * MovimientoParqueaderoConstant.VALOR_DIA_MOTO);
-				
-				double horasRestantesPorCobrar = parteFraccionDiasTotales.multiply(new BigDecimal(24)).doubleValue();
-				
-				valorCobrado = valorCobrado.add(new BigDecimal(horasRestantesPorCobrar * MovimientoParqueaderoConstant.VALOR_MOTO_HORA));
-				
-				movimientoParqueadero.setValorCobrado(cobrarVehiculoTipoMotoPorDias(movimientoParqueadero, valorCobrado));
-			}else {
-				
-				movimientoParqueadero.setValorCobrado(new BigDecimal(MovimientoParqueaderoConstant.VALOR_DIA_MOTO));
-			}
-			
-			if (movimientoParqueadero.getVehiculo().getCilindraje() > MovimientoParqueaderoConstant.CILINDRAJE_CON_RECARGO_MOTOS) {
-				BigDecimal valorConRecargo = movimientoParqueadero.getValorCobrado();
-				valorConRecargo = valorConRecargo.add(new BigDecimal(MovimientoParqueaderoConstant.VALOR_RECARGO_CILINDRAJE_500_MOTO));
-				movimientoParqueadero.setValorCobrado(valorConRecargo);
-			}
-			movimientoParqueadero.setFechaRetiro(fechaRetiro);
-			movimientoParqueadero.setEstado(MovimientoParqueaderoConstant.ESTADO_RETIRADO);
-			
+			valorCobrado = valorCobrado.add(new BigDecimal(valorDia));
 		}
+		
+		valorCobrado = valorCobrado.add(cobrarPorCilandraje(cilindraje));
+		
+		
+		return valorCobrado;
 	}
 
-	private BigDecimal cobrarVehiculoTipoMotoPorDias(MovimientoParqueadero movimientoParqueadero, BigDecimal valorCobrado) {
-		
-		if(movimientoParqueadero.getVehiculo().getCilindraje() > MovimientoParqueaderoConstant.CILINDRAJE_CON_RECARGO_MOTOS) {
-			
-			valorCobrado.add(BigDecimal.valueOf(MovimientoParqueaderoConstant.VALOR_RECARGO_CILINDRAJE_500_MOTO));
-			
+	private BigDecimal cobrarPorCilandraje(Integer cilindraje) {
+		BigDecimal valorCobrado = BigDecimal.ZERO;
+		if(cilindraje > MovimientoParqueaderoConstant.CILINDRAJE_CON_RECARGO_MOTOS) {
+			valorCobrado = valorCobrado.add(BigDecimal.valueOf(MovimientoParqueaderoConstant.VALOR_RECARGO_CILINDRAJE_500_MOTO));
 		}
 		
 		return valorCobrado;

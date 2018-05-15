@@ -10,17 +10,17 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/rest")
 public class RestController {
 	
-	@GetMapping("/checkrest")
-	public ResponseEntity<String> chechRest(){
-		
-		return new ResponseEntity<String>("OK", HttpStatus.OK);
-		
-	}
-	
-	@GetMapping("/holamundo")
-	public ModelAndView holaMundo() {
-		
-		return new ModelAndView("holamundo");
-	}
+//	@GetMapping("/checkrest")
+//	public ResponseEntity<String> chechRest(){
+//		
+//		return new ResponseEntity<String>("OK", HttpStatus.OK);
+//		
+//	}
+//	
+//	@GetMapping("/holamundo")
+//	public ModelAndView holaMundo() {
+//		
+//		return new ModelAndView("holamundo");
+//	}
 
 }

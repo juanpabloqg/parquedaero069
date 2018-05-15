@@ -2,22 +2,12 @@ package com.ceiba.parqueadero069.domain;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class MovimientoParqueadero {
 
-//	private static final Integer VALOR_CARRO_HORA = 1000;
-//
-//	private static final Integer VALOR_MOTO_HORA = 500;
-//
-//	private static final Integer VALOR_DIA_CARRO = 8000;
-//
-//	private static final Integer VALOR_DIA_MOTO = 4000;
-//
-//	private static final Integer CAPACIDAD_MAXIMA_CARRO = 20;
-//
-//	private static final Integer CAPACIDAD_MAXIMA_MOTOS = 10;
 
+	private Integer id;
+	
 	private Vehiculo vehiculo;
 
 	private LocalDateTime fechaIngreso;
@@ -80,6 +70,14 @@ public class MovimientoParqueadero {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	
 	

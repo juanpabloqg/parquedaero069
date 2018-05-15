@@ -23,6 +23,7 @@ public class MovimientoParqueaderoBuilder {
 	public MovimientoParqueaderoEntity converterParqueo2ParqueoEntity(MovimientoParqueadero movimientoParqueadero) {
 		
 		MovimientoParqueaderoEntity movimientoParqueaderoEntity = new MovimientoParqueaderoEntity();
+		movimientoParqueaderoEntity.setIdParqueo( movimientoParqueadero.getId() );
 		movimientoParqueaderoEntity.setFechaIngreso(movimientoParqueadero.getFechaIngreso());
 		movimientoParqueaderoEntity.setFechaRetiro(movimientoParqueadero.getFechaRetiro());
 		movimientoParqueaderoEntity.setVehiculo(vehiculoBuilder.converterVehiculo2VehiculoEntity(movimientoParqueadero.getVehiculo()));
@@ -41,6 +42,7 @@ public class MovimientoParqueaderoBuilder {
 	public MovimientoParqueadero convertParqueoEntity2Parqueo(MovimientoParqueaderoEntity movimientoParqueaderoEntity) {
 		
 		MovimientoParqueadero movimientoParqueadero = new MovimientoParqueadero();
+		movimientoParqueadero.setId( movimientoParqueaderoEntity.getIdParqueo() );
 		movimientoParqueadero.setFechaIngreso(movimientoParqueaderoEntity.getFechaIngreso());
 		movimientoParqueadero.setFechaRetiro(movimientoParqueaderoEntity.getFechaRetiro());
 		movimientoParqueadero.setVehiculo(vehiculoBuilder.convertVehiculoEntity2Vehiculo(movimientoParqueaderoEntity.getVehiculo()));

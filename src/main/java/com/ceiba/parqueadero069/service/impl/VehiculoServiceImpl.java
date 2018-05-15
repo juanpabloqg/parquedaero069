@@ -26,13 +26,13 @@ public class VehiculoServiceImpl implements VehiculoService {
 	
 	
 
-	@Override
-	public Vehiculo addVechiculo(Vehiculo vehiculo) {
-		
-		VehiculoEntity vehiculoEntity = vehiculoRepository.save(vehiculoBuilder.converterVehiculo2VehiculoEntity(vehiculo));
-		
-		return vehiculoBuilder.convertVehiculoEntity2Vehiculo(vehiculoEntity);
-	}
+//	@Override
+//	public Vehiculo addVechiculo(Vehiculo vehiculo) {
+//		
+//		VehiculoEntity vehiculoEntity = vehiculoRepository.save(vehiculoBuilder.converterVehiculo2VehiculoEntity(vehiculo));
+//		
+//		return vehiculoBuilder.convertVehiculoEntity2Vehiculo(vehiculoEntity);
+//	}
 
 	
 	@Override
@@ -46,11 +46,11 @@ public class VehiculoServiceImpl implements VehiculoService {
 	}
 	
 
-	@Override
-	public void removeVehiculo(Vehiculo vehiculo) {
-		
-		vehiculoRepository.delete(vehiculoBuilder.converterVehiculo2VehiculoEntity(vehiculo));
-		
-	}
+//	@Override
+//	public void removeVehiculo(Vehiculo vehiculo) {
+//		
+//		vehiculoRepository.delete(vehiculoBuilder.converterVehiculo2VehiculoEntity(vehiculo));
+//		
+//	}
 
 }
