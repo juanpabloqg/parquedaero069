@@ -1,8 +1,10 @@
 package com.ceiba.parqueadero069.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.ceiba.parqueadero069.domain.MovimientoParqueadero;
+import com.ceiba.parqueadero069.persistencia.entity.MovimientoParqueaderoEntity;
 
 public interface MovimientoParqueaderoService {
 	
@@ -10,9 +12,11 @@ public interface MovimientoParqueaderoService {
 	
 	public abstract void verificarDisponibilidadParqueaderos(String tipoVehiculo);	
 	
-	public abstract void retirarVehiculo(MovimientoParqueadero movimientoParqueadero);
+	public abstract String retirarVehiculo(String placa,  LocalDateTime fechaRetiro);
 	
-	public abstract MovimientoParqueadero obtenerVehiculoParqueadoPorPlaca(String placa);
+	public abstract MovimientoParqueaderoEntity obtenerVehiculoParqueadoPorPlaca(String placa);
+	
+	public abstract MovimientoParqueaderoEntity obtenerRetiradoParqueadoPorPlaca(String placa);
 	
 	public abstract void verificarDisponibilidadPorInicioLetrasPlaca(MovimientoParqueadero movimientoParqueadero);
 	

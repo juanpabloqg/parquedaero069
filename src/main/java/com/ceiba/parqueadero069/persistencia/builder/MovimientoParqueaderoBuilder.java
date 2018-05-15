@@ -20,14 +20,16 @@ public class MovimientoParqueaderoBuilder {
 	 * @param vehiculo
 	 * @return
 	 */
-	public MovimientoParqueaderoEntity converterParqueo2ParqueoEntity(MovimientoParqueadero parqueo) {
+	public MovimientoParqueaderoEntity converterParqueo2ParqueoEntity(MovimientoParqueadero movimientoParqueadero) {
 		
-		MovimientoParqueaderoEntity parqueoEntity = new MovimientoParqueaderoEntity();
-		parqueoEntity.setFechaIngreso(parqueo.getFechaIngreso());
-		parqueoEntity.setFechaRetiro(parqueo.getFechaRetiro());
-		parqueoEntity.setVehiculo(vehiculoBuilder.converterVehiculo2VehiculoEntity(parqueo.getVehiculo()));
+		MovimientoParqueaderoEntity movimientoParqueaderoEntity = new MovimientoParqueaderoEntity();
+		movimientoParqueaderoEntity.setFechaIngreso(movimientoParqueadero.getFechaIngreso());
+		movimientoParqueaderoEntity.setFechaRetiro(movimientoParqueadero.getFechaRetiro());
+		movimientoParqueaderoEntity.setVehiculo(vehiculoBuilder.converterVehiculo2VehiculoEntity(movimientoParqueadero.getVehiculo()));
+		movimientoParqueaderoEntity.setValorCobrado(movimientoParqueadero.getValorCobrado());
+		movimientoParqueaderoEntity.setEstado(movimientoParqueadero.getEstado());
 		
-		return parqueoEntity;
+		return movimientoParqueaderoEntity;
 		
 	} 
 	
@@ -36,14 +38,16 @@ public class MovimientoParqueaderoBuilder {
 	 * @param vehiculoEntity
 	 * @return
 	 */
-	public MovimientoParqueadero convertParqueoEntity2Parqueo(MovimientoParqueaderoEntity parqueoEntity) {
+	public MovimientoParqueadero convertParqueoEntity2Parqueo(MovimientoParqueaderoEntity movimientoParqueaderoEntity) {
 		
-		MovimientoParqueadero parqueo = new MovimientoParqueadero();
-		parqueo.setFechaIngreso(parqueoEntity.getFechaIngreso());
-		parqueo.setFechaRetiro(parqueoEntity.getFechaRetiro());
-		parqueo.setVehiculo(vehiculoBuilder.convertVehiculoEntity2Vehiculo(parqueoEntity.getVehiculo()));
+		MovimientoParqueadero movimientoParqueadero = new MovimientoParqueadero();
+		movimientoParqueadero.setFechaIngreso(movimientoParqueaderoEntity.getFechaIngreso());
+		movimientoParqueadero.setFechaRetiro(movimientoParqueaderoEntity.getFechaRetiro());
+		movimientoParqueadero.setVehiculo(vehiculoBuilder.convertVehiculoEntity2Vehiculo(movimientoParqueaderoEntity.getVehiculo()));
+		movimientoParqueadero.setValorCobrado(movimientoParqueaderoEntity.getValorCobrado());
+		movimientoParqueadero.setEstado(movimientoParqueaderoEntity.getEstado());
 		
-		return parqueo;
+		return movimientoParqueadero;
 		
 	} 
 

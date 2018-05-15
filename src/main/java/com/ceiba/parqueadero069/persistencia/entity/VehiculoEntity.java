@@ -11,7 +11,7 @@ public class VehiculoEntity {
 
 	@Id
 	@Column(name = "id_vehiculo")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idVehiculo;
 	
 	@Column(name = "tipo_vehiculo", nullable = false)
@@ -56,9 +56,9 @@ public class VehiculoEntity {
 	}	
 	
 	
-	public VehiculoEntity() {
-		idVehiculo = Integer.valueOf(0);
-	}
+//	public VehiculoEntity() {
+//		idVehiculo = Integer.valueOf(0);
+//	}
 	
 	
 	

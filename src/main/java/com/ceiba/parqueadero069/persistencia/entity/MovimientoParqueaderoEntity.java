@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +24,7 @@ public class MovimientoParqueaderoEntity {
 	
 	@Id
 	@Column(name = "id_movimiento_parqueadero")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idParqueo;
 	
 	@Cascade(CascadeType.ALL)
@@ -37,8 +38,11 @@ public class MovimientoParqueaderoEntity {
 	@Column(name = "fecha_retiro", nullable = true)
 	private LocalDateTime fechaRetiro;
 	
-	@Column(name = "valor_parqueo", nullable = true)
-	private BigDecimal valor_parqueo;
+	@Column(name = "valor_cobrado", nullable = true)
+	private BigDecimal valorCobrado;
+	
+	@Column(name = "estado", nullable = true)
+	private String estado;
 
 	public Integer getIdParqueo() {
 		return idParqueo;
@@ -70,19 +74,29 @@ public class MovimientoParqueaderoEntity {
 
 	public void setFechaRetiro(LocalDateTime fechaRetiro) {
 		this.fechaRetiro = fechaRetiro;
-	}	
+	}		
+
+	public BigDecimal getValorCobrado() {
+		return valorCobrado;
+	}
+
+	public void setValorCobrado(BigDecimal valorCobrado) {
+		this.valorCobrado = valorCobrado;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+//	public MovimientoParqueaderoEntity() {
+//		idParqueo = Integer.valueOf(0);
+//	}
+//	
 	
-	public BigDecimal getValor_parqueo() {
-		return valor_parqueo;
-	}
-
-	public void setValor_parqueo(BigDecimal valor_parqueo) {
-		this.valor_parqueo = valor_parqueo;
-	}
-
-	public MovimientoParqueaderoEntity() {
-		idParqueo = Integer.valueOf(0);
-	}
 	
 	
 	

@@ -3,7 +3,9 @@ package com.ceiba.parqueadero069.controller;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONStringer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,11 +55,13 @@ public class VigilanteController {
 		Vehiculo vehiculo = new ObjectMapper().readValue(vehiculoJson, Vehiculo.class);
 
 		
-		MovimientoParqueadero parqueo = new MovimientoParqueadero();
-		parqueo.setFechaIngreso(LocalDateTime.now());
-		parqueo.setVehiculo(vehiculo);
+		MovimientoParqueadero movimientoParqueadero = new MovimientoParqueadero();
+		movimientoParqueadero.setFechaIngreso(LocalDateTime.now());
+		movimientoParqueadero.setVehiculo(vehiculo);
+		movimientoParqueadero.setEstado(MovimientoParqueaderoConstant.ESTADO_INGRESADO);
 		
-		String respuesta = movimientoParqueaderoService.ingresarVehiculo(parqueo);		 
+		
+		String respuesta = movimientoParqueaderoService.ingresarVehiculo(movimientoParqueadero);		 
 		
 		
 		return new RestResponse(HttpStatus.OK.value(),respuesta);
@@ -71,25 +75,22 @@ public class VigilanteController {
 		return vehiculoService.listAllVehiculos();
 	}
 	
-	@PostMapping("/deletevehiculo")
-	public RestResponse deleteVehiculo(@RequestBody String placa) throws Exception {
-		
-		
-		
-		
-		
-		
-		return new RestResponse(HttpStatus.OK.value(),MovimientoParqueaderoConstant.MENSAJE_RETIRO_VEHICULO_EXITOSO);		
-		
-	}
+//	@PostMapping("/deletevehiculo")
+//	public RestResponse deleteVehiculo(@RequestBody String placa) throws Exception {
+//		
+//		
+//		return new RestResponse(HttpStatus.OK.value(),MovimientoParqueaderoConstant.MENSAJE_RETIRO_VEHICULO_EXITOSO);		
+//		
+//	}
 	
 	@PostMapping("/retirarvehiculo")
-	public RestResponse retirarVehiculo(@RequestBody String placaJson) throws Exception {
+	public RestResponse retirarVehiculo(@RequestBody String placaJson) throws MovimientoParqueaderoException, JSONException {
 		
-		MovimientoParqueadero movimientoParqueadero = new ObjectMapper().readValue(placaJson, MovimientoParqueadero.class);
+		JSONObject jsonObject = new JSONObject(placaJson);
 		
-		
-		movimientoParqueaderoService.retirarVehiculo(movimientoParqueadero);
+		String placa = jsonObject.getString("placa");		
+				
+		movimientoParqueaderoService.retirarVehiculo(placa, LocalDateTime.now());
 		
 		return new RestResponse(HttpStatus.OK.value(),MovimientoParqueaderoConstant.MENSAJE_RETIRO_VEHICULO_EXITOSO);		
 		
