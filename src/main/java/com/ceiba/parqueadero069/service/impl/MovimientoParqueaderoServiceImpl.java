@@ -1,11 +1,9 @@
 package com.ceiba.parqueadero069.service.impl;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,7 +102,7 @@ public class MovimientoParqueaderoServiceImpl implements MovimientoParqueaderoSe
 	}
 
 	@Override
-	public String retirarVehiculo(String placa, LocalDateTime fechaRetiro) throws MovimientoParqueaderoException {
+	public String retirarVehiculo(String placa, LocalDateTime fechaRetiro) {
 		
 		MovimientoParqueadero movimientoParqueadero = Optional
 				.ofNullable(obtenerVehiculoParqueadoPorPlaca(placa))
@@ -156,7 +154,7 @@ public class MovimientoParqueaderoServiceImpl implements MovimientoParqueaderoSe
 		Duration duration = Duration.between(fechaIngreso, fechaRetiro);
 		double cantidadHorasParqueado = (((double)duration.toMinutes())/60);
 		
-		BigDecimal valorCobrado = BigDecimal.ZERO;
+		BigDecimal valorCobrado;
 		
 		
 		if (cantidadHorasParqueado > MovimientoParqueaderoConstant.CANTIDAD_HORAS_LIMITE_VEHICULO) {
@@ -237,44 +235,19 @@ public class MovimientoParqueaderoServiceImpl implements MovimientoParqueaderoSe
 		return valorCobrado;
 	}
 	
-	private BigDecimal cobrarVehiculoTipoMotoPorHoras(MovimientoParqueadero movimientoParqueadero, BigDecimal valorCobrado) {
-		
-		if(movimientoParqueadero.getVehiculo().getCilindraje() > MovimientoParqueaderoConstant.CILINDRAJE_CON_RECARGO_MOTOS) {
-			
-			valorCobrado.add(BigDecimal.valueOf(MovimientoParqueaderoConstant.VALOR_RECARGO_CILINDRAJE_500_MOTO));
-			
-		}
-		
-		return valorCobrado;
-	}
+
 
 	@Override
 	public MovimientoParqueaderoEntity obtenerRetiradoParqueadoPorPlaca(String placa) {
 		
-		MovimientoParqueaderoEntity movimientoParqueaderoEntity = movimientoParqueaderoRepository.obtenerRetiradoParqueadoPorPlaca(placa);
-		return movimientoParqueaderoEntity;
+		
+		return movimientoParqueaderoRepository.obtenerRetiradoParqueadoPorPlaca(placa);
 		
 	}
 	
 
 
 
-//	private BigDecimal cobrarVehiculoTipoCarroPorDias(MovimientoParqueadero movimientoParqueadero, Integer valor) {
-//		
-//		double cantidadDiasParquedo = calcularDiasParqueado(movimientoParqueadero);
-//		
-//		return new BigDecimal(valor * cantidadDiasParquedo);
-//		
-//	}
-//	
-//	private BigDecimal cobrarVehiculoTipoCarroPorHoras(MovimientoParqueadero movimientoParqueadero,
-//			Integer valorCarroHora) {
-//			
-//		
-//		double cantidadHorasParqueo = calcularHorasParqueado(movimientoParqueadero);
-//		
-//		return new BigDecimal(valorCarroHora * cantidadHorasParqueo);
-//	}
 
 
 	

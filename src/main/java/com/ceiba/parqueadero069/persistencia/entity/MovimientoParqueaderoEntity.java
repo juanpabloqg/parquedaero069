@@ -5,18 +5,14 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-
-import com.ceiba.parqueadero069.domain.Vehiculo;
 
 @Entity(name = "movimiento_parqueadero")
 //@NamedQuery(name = "movimiento_parqueadero.findByPlaca", query = "SELECT m FROM movimiento_parqueadero m WHERE m.vehiculoEntity.placa = :placa")
@@ -92,10 +88,7 @@ public class MovimientoParqueaderoEntity {
 		this.estado = estado;
 	}
 
-//	public MovimientoParqueaderoEntity() {
-//		idParqueo = Integer.valueOf(0);
-//	}
-//	
+
 	
 	
 	

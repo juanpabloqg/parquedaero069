@@ -44,7 +44,7 @@ public class VigilanteController {
 	private VehiculoService vehiculoService;
 	
 	@PostMapping("/ingresarautomovil")
-	public RestResponse ingresarVehiculo(@RequestBody String vehiculoJson) throws JsonParseException, JsonMappingException, IOException {
+	public RestResponse ingresarVehiculo(@RequestBody String vehiculoJson) throws JsonParseException, JsonMappingException, IOException{
 		
 		Vehiculo vehiculo = new ObjectMapper().readValue(vehiculoJson, Vehiculo.class);
 
@@ -69,16 +69,10 @@ public class VigilanteController {
 		return vehiculoService.listAllVehiculos();
 	}
 	
-//	@PostMapping("/deletevehiculo")
-//	public RestResponse deleteVehiculo(@RequestBody String placa) throws Exception {
-//		
-//		
-//		return new RestResponse(HttpStatus.OK.value(),MovimientoParqueaderoConstant.MENSAJE_RETIRO_VEHICULO_EXITOSO);		
-//		
-//	}
+
 	
 	@PostMapping("/retirarvehiculo")
-	public RestResponse retirarVehiculo(@RequestBody String placaJson) throws MovimientoParqueaderoException, JSONException {
+	public RestResponse retirarVehiculo(@RequestBody String placaJson) throws JSONException {
 		
 		JSONObject jsonObject = new JSONObject(placaJson);
 		
