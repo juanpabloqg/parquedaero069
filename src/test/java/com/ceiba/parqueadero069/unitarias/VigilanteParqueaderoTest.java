@@ -4,15 +4,9 @@ package com.ceiba.parqueadero069.unitarias;
 
 import static org.junit.Assert.fail;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpUriRequest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,9 +14,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.elasticsearch.jest.HttpClientConfigBuilderCustomizer;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.ceiba.parqueadero069.constantes.MovimientoParqueaderoConstant;
@@ -34,9 +26,6 @@ import com.ceiba.parqueadero069.persistencia.repository.MovimientoParqueaderoRep
 import com.ceiba.parqueadero069.service.impl.MovimientoParqueaderoServiceImpl;
 import com.ceiba.parqueadero069.testDataBuilder.MovimientoParqueaderoTestDataBuilder;
 import com.ceiba.parqueadero069.testDataBuilder.VehiculoTestDataBuilder;
-import com.ceiba.parqueadero069.util.RestResponse;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 
 
