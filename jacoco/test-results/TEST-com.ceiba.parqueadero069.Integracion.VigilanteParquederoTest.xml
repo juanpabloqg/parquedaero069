@@ -1,15 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.ceiba.parqueadero069.Integracion.VigilanteParquederoTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2018-05-16T14:33:02" hostname="JUAN-QUINONES" time="0.966">
-  <properties/>
-  <testcase name="ingresarMotoPlacaIniciaADomingo" classname="com.ceiba.parqueadero069.Integracion.VigilanteParquederoTest" time="0.647"/>
-  <testcase name="ingresarMotoCilinidrajeMas500" classname="com.ceiba.parqueadero069.Integracion.VigilanteParquederoTest" time="0.025"/>
-  <testcase name="retirarCarro" classname="com.ceiba.parqueadero069.Integracion.VigilanteParquederoTest" time="0.09"/>
-  <testcase name="retirarMoto10HorasCilindraje650" classname="com.ceiba.parqueadero069.Integracion.VigilanteParquederoTest" time="0.055"/>
-  <testcase name="ingresarCarroPlacaIniciaAunDomingo" classname="com.ceiba.parqueadero069.Integracion.VigilanteParquederoTest" time="0.038"/>
-  <testcase name="ingresarCarro" classname="com.ceiba.parqueadero069.Integracion.VigilanteParquederoTest" time="0.019"/>
-  <testcase name="ingresarMoto" classname="com.ceiba.parqueadero069.Integracion.VigilanteParquederoTest" time="0.019"/>
-  <testcase name="retirarCarro1Dia3Horas" classname="com.ceiba.parqueadero069.Integracion.VigilanteParquederoTest" time="0.043"/>
-  <system-out><![CDATA[09:32:46.785 [Test worker] DEBUG org.springframework.test.context.junit4.SpringJUnit4ClassRunner - SpringJUnit4ClassRunner constructor called with [class com.ceiba.parqueadero069.Integracion.VigilanteParquederoTest]
+<testsuite
+	name="com.ceiba.parqueadero069.Integracion.VigilanteParquederoTest"
+	tests="8" skipped="0" failures="0" errors="0"
+	timestamp="2018-05-16T14:33:02" hostname="JUAN-QUINONES" time="0.966">
+	<properties />
+	<testcase name="ingresarMotoPlacaIniciaADomingo"
+		classname="com.ceiba.parqueadero069.Integracion.VigilanteParquederoTest"
+		time="0.647" />
+	<testcase name="ingresarMotoCilinidrajeMas500"
+		classname="com.ceiba.parqueadero069.Integracion.VigilanteParquederoTest"
+		time="0.025" />
+	<testcase name="retirarCarro"
+		classname="com.ceiba.parqueadero069.Integracion.VigilanteParquederoTest"
+		time="0.09" />
+	<testcase name="retirarMoto10HorasCilindraje650"
+		classname="com.ceiba.parqueadero069.Integracion.VigilanteParquederoTest"
+		time="0.055" />
+	<testcase name="ingresarCarroPlacaIniciaAunDomingo"
+		classname="com.ceiba.parqueadero069.Integracion.VigilanteParquederoTest"
+		time="0.038" />
+	<testcase name="ingresarCarro"
+		classname="com.ceiba.parqueadero069.Integracion.VigilanteParquederoTest"
+		time="0.019" />
+	<testcase name="ingresarMoto"
+		classname="com.ceiba.parqueadero069.Integracion.VigilanteParquederoTest"
+		time="0.019" />
+	<testcase name="retirarCarro1Dia3Horas"
+		classname="com.ceiba.parqueadero069.Integracion.VigilanteParquederoTest"
+		time="0.043" />
+	<system-out><![CDATA[09:32:46.785 [Test worker] DEBUG org.springframework.test.context.junit4.SpringJUnit4ClassRunner - SpringJUnit4ClassRunner constructor called with [class com.ceiba.parqueadero069.Integracion.VigilanteParquederoTest]
 09:32:46.811 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating CacheAwareContextLoaderDelegate from class [org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate]
 09:32:46.858 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating BootstrapContext using constructor [public org.springframework.test.context.support.DefaultBootstrapContext(java.lang.Class,org.springframework.test.context.CacheAwareContextLoaderDelegate)]
 09:32:46.934 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating TestContextBootstrapper for test class [com.ceiba.parqueadero069.Integracion.VigilanteParquederoTest] from class [org.springframework.boot.test.context.SpringBootTestContextBootstrapper]
@@ -164,5 +183,6 @@ Hibernate: select movimiento0_.id_movimiento_parqueadero as id_movim1_0_, movimi
 Hibernate: select vehiculoen0_.id_vehiculo as id_vehic1_1_0_, vehiculoen0_.cilindraje as cilindra2_1_0_, vehiculoen0_.placa as placa3_1_0_, vehiculoen0_.tipo_vehiculo as tipo_veh4_1_0_ from vehiculo vehiculoen0_ where vehiculoen0_.id_vehiculo=?
 Hibernate: select movimiento0_.id_movimiento_parqueadero as id_movim1_0_, movimiento0_.estado as estado2_0_, movimiento0_.fecha_ingreso as fecha_in3_0_, movimiento0_.fecha_retiro as fecha_re4_0_, movimiento0_.valor_cobrado as valor_co5_0_, movimiento0_.id_vehiculo as id_vehic6_0_ from movimiento_parqueadero movimiento0_ cross join vehiculo vehiculoen1_ where movimiento0_.id_vehiculo=vehiculoen1_.id_vehiculo and vehiculoen1_.placa=? and movimiento0_.estado='INGRESADO'
 ]]></system-out>
-  <system-err><![CDATA[]]></system-err>
+	<system-err><![CDATA[]]>
+	</system-err>
 </testsuite>
