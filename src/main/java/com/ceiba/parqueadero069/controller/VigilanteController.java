@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ceiba.parqueadero069.constantes.MovimientoParqueaderoConstant;
 import com.ceiba.parqueadero069.domain.MovimientoParqueadero;
 import com.ceiba.parqueadero069.domain.Vehiculo;
-import com.ceiba.parqueadero069.exception.MovimientoParqueaderoException;
 import com.ceiba.parqueadero069.persistencia.builder.VehiculoBuilder;
 import com.ceiba.parqueadero069.service.MovimientoParqueaderoService;
 import com.ceiba.parqueadero069.service.VehiculoService;
@@ -27,7 +26,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@RestController
+@RestController("vigilanteController")
 @RequestMapping("/vehiculos")
 public class VigilanteController {
 	

@@ -1,29 +1,41 @@
 package com.ceiba.parqueadero069.Integracion;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.ceiba.parqueadero069.constantes.MovimientoParqueaderoConstant;
+import com.ceiba.parqueadero069.controller.VigilanteController;
 import com.ceiba.parqueadero069.domain.MovimientoParqueadero;
 import com.ceiba.parqueadero069.domain.Vehiculo;
+import com.ceiba.parqueadero069.persistencia.builder.MovimientoParqueaderoBuilder;
+import com.ceiba.parqueadero069.persistencia.builder.VehiculoBuilder;
 import com.ceiba.parqueadero069.persistencia.entity.MovimientoParqueaderoEntity;
 import com.ceiba.parqueadero069.service.MovimientoParqueaderoService;
 import com.ceiba.parqueadero069.testDataBuilder.MovimientoParqueaderoTestDataBuilder;
 import com.ceiba.parqueadero069.testDataBuilder.VehiculoTestDataBuilder;
+import com.ceiba.parqueadero069.util.RestResponse;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 
 @RunWith(SpringRunner.class)
@@ -34,9 +46,13 @@ public class VigilanteParquederoTest {
 	@Qualifier("movimientoParqueaderoService")
 	private MovimientoParqueaderoService movimientoParqueaderoService;
 	
+	@Autowired
+	@Qualifier("vigilanteController")
+	private VigilanteController vigilanteController;
 	
-	
-	
+	@Autowired
+	@Qualifier("movimientoParqueaderoBuilder")
+	private MovimientoParqueaderoBuilder movimientoParqueaderoBuilder;
 	
 	@Before
 	public void setUp() {
@@ -255,6 +271,93 @@ public class VigilanteParquederoTest {
 		assertEquals(new BigInteger("6000"), movimientoParqueaderoEntity.getValorCobrado().toBigInteger());
 		
 	}
+	
+	@Test
+	public void ingresarCarroController() throws JsonParseException, JsonMappingException, IOException {
+		
+		//Arrange
+		String vehiculoJson = "{\r\n" + 
+				"	\r\n" + 
+				"	\"tipoVehiculo\" : \"CARRO\",\r\n" + 
+				"	\"placa\" : \"HHH162\"\r\n" + 
+				"\r\n" + 
+				"}";
+		
+		//Act		
+		RestResponse restResponse = vigilanteController.ingresarVehiculo(vehiculoJson);
+		
+		
+		//Assert
+		Assert.assertEquals(HttpStatus.OK.value(), restResponse.getResponseCode());
+		Assert.assertEquals(MovimientoParqueaderoConstant.MENSAJE_INGRESO_EXITOSO, restResponse.getMessage());
+		
+		
+	}
+	
+
+	
+	
+	@Test
+	public void RetirarVehiculoController() throws JsonParseException, JsonMappingException, IOException {
+		
+		//Arrange
+		String vehiculoJson = "{\r\n" + 
+				"	\r\n" + 
+				"	\"tipoVehiculo\" : \"CARRO\",\r\n" + 
+				"	\"placa\" : \"HHH162\"\r\n" + 
+				"\r\n" + 
+				"}";
+		
+		String placaJson = "{\r\n" + 
+				"	placa:\"HHH162\"\r\n" + 
+				"}";
+		
+		//Act
+		RestResponse restResponseIngreso = vigilanteController.ingresarVehiculo(vehiculoJson);
+		RestResponse restResponseRetiro = vigilanteController.retirarVehiculo(placaJson);
+		
+		
+		//Assert
+		Assert.assertEquals(HttpStatus.OK.value(), restResponseIngreso.getResponseCode());
+		Assert.assertEquals(MovimientoParqueaderoConstant.MENSAJE_INGRESO_EXITOSO , restResponseIngreso.getMessage());
+		
+		Assert.assertEquals(HttpStatus.OK.value(), restResponseRetiro.getResponseCode());	
+		Assert.assertEquals(MovimientoParqueaderoConstant.MENSAJE_RETIRO_VEHICULO_EXITOSO, restResponseRetiro.getMessage());
+		
+		
+	}
+	
+	@Test
+	public void listAllVehiculosController() throws JsonParseException, JsonMappingException, IOException {
+		
+		//Arrange
+		String vehiculoJson = "{\r\n" + 
+				"	\r\n" + 
+				"	\"tipoVehiculo\" : \"CARRO\",\r\n" + 
+				"	\"placa\" : \"JJJ162\"\r\n" + 
+				"\r\n" + 
+				"}";
+		
+		
+		//Act
+		RestResponse restResponseIngreso = vigilanteController.ingresarVehiculo(vehiculoJson);
+		List<Vehiculo> listaVehiculos = vigilanteController.listAllVehiculos();
+		MovimientoParqueadero movimientoParqueadero = movimientoParqueaderoBuilder
+				.convertParqueoEntity2Parqueo(movimientoParqueaderoService.obtenerVehiculoParqueadoPorPlacaEntity("JJJ162"));
+		
+		
+		//Assert
+		Assert.assertEquals(HttpStatus.OK.value(), restResponseIngreso.getResponseCode());
+		Assert.assertEquals(MovimientoParqueaderoConstant.MENSAJE_INGRESO_EXITOSO , restResponseIngreso.getMessage());
+		
+		Assert.assertTrue(listaVehiculos.size() > 0);
+		Assert.assertEquals("JJJ162",movimientoParqueadero.getVehiculo().getPlaca());
+		
+		
+		
+	}
+	
+	
 	
 	
 	

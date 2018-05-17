@@ -1,11 +1,18 @@
 package com.ceiba.parqueadero069.unitarias;
 
 
+
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,10 +20,13 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.elasticsearch.jest.HttpClientConfigBuilderCustomizer;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.ceiba.parqueadero069.constantes.MovimientoParqueaderoConstant;
+import com.ceiba.parqueadero069.controller.VigilanteController;
 import com.ceiba.parqueadero069.domain.MovimientoParqueadero;
 import com.ceiba.parqueadero069.domain.Vehiculo;
 import com.ceiba.parqueadero069.exception.MovimientoParqueaderoException;
@@ -24,6 +34,9 @@ import com.ceiba.parqueadero069.persistencia.repository.MovimientoParqueaderoRep
 import com.ceiba.parqueadero069.service.impl.MovimientoParqueaderoServiceImpl;
 import com.ceiba.parqueadero069.testDataBuilder.MovimientoParqueaderoTestDataBuilder;
 import com.ceiba.parqueadero069.testDataBuilder.VehiculoTestDataBuilder;
+import com.ceiba.parqueadero069.util.RestResponse;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 
 
@@ -58,11 +71,16 @@ public class VigilanteParqueaderoTest {
 	@Qualifier("movimientoParqueaderoRepository")
 	private MovimientoParqueaderoRepository movimientoParqueaderoRepository;
 	
+	@Autowired
+	@Qualifier("vigilanteController")
+	private VigilanteController vigilanteController;
+	
 	@Before
 	public void setup() {
 		
 		movimientoParqueaderoService = Mockito.mock(MovimientoParqueaderoServiceImpl.class);
 		movimientoParqueaderoRepository = Mockito.mock(MovimientoParqueaderoRepository.class);
+		vigilanteController = Mockito.mock(VigilanteController.class);
 
 	}
 
@@ -253,14 +271,9 @@ public class VigilanteParqueaderoTest {
 		
 	}
 	
+		
 	
-	
-	
-	
-	
-	
-	
-	
+		
 	
 	
 
