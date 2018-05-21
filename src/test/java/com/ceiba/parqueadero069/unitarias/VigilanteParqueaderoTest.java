@@ -35,22 +35,14 @@ public class VigilanteParqueaderoTest {
 	
 	private static final String TIPO_VEHICULO_CARRO = "CARRO";
 	private static final String TIPO_VEHICULO_MOTO = "MOTO";
-	private static final String PLACA_CARRO = "HMV545";
+	
 	private static final String PLACA_CARRO_INICIA_CON_A = "AAA545";
-	private static final String PLACA_MOTO = "HLV54D";
+	
 	private static final String FORMATO_FECHA = "yyyy-MM-dd HH:mm:ss";
-	private static final String FECHA_INGRESO = "2018-05-09 08:00:00";
+	
 	private static final String FECHA_INGRESO_NO_LUNES_NO_DOMINGO = "2018-05-09 08:00:00";
-	private static final String MENSAJE_INGRESO_EXITOSO = "Vehiculo ingresado exitosamente";
+	
 	private static final String MENSAJE_NO_DISPONIBILIDAD_PARQUEO = "No hay mas capacidad en el paqueadero";
-	
-	private static final Integer VALOR_CARRO_HORA = 1000;
-	private static final Integer VALOR_MOTO_HORA = 500;
-	private static final Integer VALOR_DIA_CARRO = 8000;
-	private static final Integer VALOR_DIA_MOTO = 4000;
-	private static final Integer CAPACIDAD_MAXIMA_CARRO = 20;
-	private static final Integer CAPACIDAD_MAXIMA_MOTOS = 10;
-	
 	
 	@Autowired
 	@Qualifier("movimientoParqueaderoService")

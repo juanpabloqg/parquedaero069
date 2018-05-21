@@ -1,12 +1,10 @@
 package com.ceiba.parqueadero069.Integracion;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -16,7 +14,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,7 +25,6 @@ import com.ceiba.parqueadero069.controller.VigilanteController;
 import com.ceiba.parqueadero069.domain.MovimientoParqueadero;
 import com.ceiba.parqueadero069.domain.Vehiculo;
 import com.ceiba.parqueadero069.persistencia.builder.MovimientoParqueaderoBuilder;
-import com.ceiba.parqueadero069.persistencia.builder.VehiculoBuilder;
 import com.ceiba.parqueadero069.persistencia.entity.MovimientoParqueaderoEntity;
 import com.ceiba.parqueadero069.service.MovimientoParqueaderoService;
 import com.ceiba.parqueadero069.testDataBuilder.MovimientoParqueaderoTestDataBuilder;
