@@ -2,6 +2,12 @@ package com.ceiba.parqueadero069.constantes;
 
 public class MovimientoParqueaderoConstant {
 	
+	
+	
+	private MovimientoParqueaderoConstant() {
+		super();
+		
+	}
 	public static final String TIPO_VEHICULO_CARRO = "CARRO";
 	public static final String TIPO_VEHICULO_MOTO = "MOTO";
 	public static final String PLACA_CARRO = "HMV545";

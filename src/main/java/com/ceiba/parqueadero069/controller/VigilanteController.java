@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.json.JSONException;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,8 +22,7 @@ import com.ceiba.parqueadero069.persistencia.builder.VehiculoBuilder;
 import com.ceiba.parqueadero069.service.MovimientoParqueaderoService;
 import com.ceiba.parqueadero069.service.VehiculoService;
 import com.ceiba.parqueadero069.util.RestResponse;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController("vigilanteController")
@@ -43,7 +42,7 @@ public class VigilanteController {
 	private VehiculoService vehiculoService;
 	
 	@PostMapping("/ingresarautomovil")
-	public RestResponse ingresarVehiculo(@RequestBody String vehiculoJson) throws JsonParseException, JsonMappingException, IOException{
+	public RestResponse ingresarVehiculo(@RequestBody String vehiculoJson) throws IOException{
 		
 		Vehiculo vehiculo = new ObjectMapper().readValue(vehiculoJson, Vehiculo.class);
 
@@ -71,7 +70,7 @@ public class VigilanteController {
 
 	
 	@PostMapping("/retirarvehiculo")
-	public RestResponse retirarVehiculo(@RequestBody String placaJson) throws JSONException {
+	public RestResponse retirarVehiculo(@RequestBody String placaJson) {
 		
 		JSONObject jsonObject = new JSONObject(placaJson);
 		

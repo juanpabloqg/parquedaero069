@@ -65,30 +65,25 @@ public class MovimientoParqueaderoServiceImpl implements MovimientoParqueaderoSe
 	public void verificarDisponibilidadParqueaderos(String tipoVehiculo) {
 		
 		
-		Integer cantidadCarros;
-		Integer cantidadMotos;
-		
 		if (tipoVehiculo.equals(MovimientoParqueaderoConstant.TIPO_VEHICULO_CARRO)) {
 			
-			cantidadCarros = movimientoParqueaderoRepository.countVehiculos(MovimientoParqueaderoConstant.TIPO_VEHICULO_CARRO);
-			
-			if (cantidadCarros > MovimientoParqueaderoConstant.CAPACIDAD_MAXIMA_CARRO) {
-				
-				throw new MovimientoParqueaderoException(MENSAJE_NO_DISPONIBILIDAD_PARQUEO);
-				
-			}
+			contarVehiculos(tipoVehiculo, MovimientoParqueaderoConstant.CAPACIDAD_MAXIMA_CARRO);
 			
 		} else if (tipoVehiculo.equals(MovimientoParqueaderoConstant.TIPO_VEHICULO_MOTO)) {
 			
-			cantidadMotos = movimientoParqueaderoRepository.countVehiculos(MovimientoParqueaderoConstant.TIPO_VEHICULO_MOTO);
-			
-			if (cantidadMotos > MovimientoParqueaderoConstant.CAPACIDAD_MAXIMA_MOTOS) {
-				
-				throw new MovimientoParqueaderoException(MENSAJE_NO_DISPONIBILIDAD_PARQUEO);
-				
-			}
-
+			contarVehiculos(tipoVehiculo, MovimientoParqueaderoConstant.CAPACIDAD_MAXIMA_MOTOS);
 		}		
+		
+	}
+	
+	public void contarVehiculos(String tipoVehiculo, Integer capacidadMaxima) {
+		
+		Integer cantidadVehiculos = movimientoParqueaderoRepository.countVehiculos(tipoVehiculo);
+		
+		if(cantidadVehiculos > capacidadMaxima) {
+			
+			throw new MovimientoParqueaderoException(MENSAJE_NO_DISPONIBILIDAD_PARQUEO);
+		}
 		
 	}
 	
