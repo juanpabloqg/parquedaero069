@@ -19,12 +19,12 @@ public class Vehiculo {
 		
 	}	
 
-	public Integer getIdVehículo() {
+	public Integer getIdVehiculo() {
 		return idVehiculo;
 	}
 
-	public void setIdVehículo(Integer idVehículo) {
-		this.idVehiculo = idVehículo;
+	public void setIdVehiculo(Integer idVehiculo) {
+		this.idVehiculo = idVehiculo;
 	}
 
 	public String getTipoVehiculo() {
