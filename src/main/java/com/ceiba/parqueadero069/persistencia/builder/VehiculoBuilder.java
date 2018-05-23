@@ -16,6 +16,7 @@ public class VehiculoBuilder {
 	public VehiculoEntity converterVehiculo2VehiculoEntity(Vehiculo vehiculo) {
 		
 		VehiculoEntity vehiculoEntity = new VehiculoEntity();
+		vehiculoEntity.setIdVehiculo(vehiculo.getIdVehículo());
 		vehiculoEntity.setPlaca(vehiculo.getPlaca());
 		vehiculoEntity.setTipoVehiculo(vehiculo.getTipoVehiculo());
 		vehiculoEntity.setCilindraje(vehiculo.getCilindraje());
@@ -32,6 +33,7 @@ public class VehiculoBuilder {
 	public Vehiculo convertVehiculoEntity2Vehiculo(VehiculoEntity vehiculoEntity) {
 		
 		Vehiculo vehiculo = new Vehiculo();
+		vehiculo.setIdVehículo(vehiculoEntity.getIdVehiculo());
 		vehiculo.setPlaca(vehiculoEntity.getPlaca());
 		vehiculo.setTipoVehiculo(vehiculoEntity.getTipoVehiculo());
 		vehiculo.setCilindraje(vehiculoEntity.getCilindraje());
