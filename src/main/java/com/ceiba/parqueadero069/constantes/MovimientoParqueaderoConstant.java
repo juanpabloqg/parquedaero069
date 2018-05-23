@@ -20,7 +20,9 @@ public class MovimientoParqueaderoConstant {
 	public static final Integer VALOR_RECARGO_CILINDRAJE_500_MOTO = 2000;
 	public static final long CANTIDAD_HORAS_LIMITE_VEHICULO = 9;
 	
+	public static final String PLACA_CARRO_INICIA_CON_A = "AAA545";
 	
+	public static final String FECHA_INGRESO_NO_LUNES_NO_DOMINGO = "2018-05-09 08:00:00";	
 	
 	public static final String FORMATO_FECHA = "yyyy-MM-dd HH:mm:ss";
 	public static final String FECHA_INGRESO = "2018-05-09 08:00:00";

@@ -32,17 +32,7 @@ import com.ceiba.parqueadero069.testDataBuilder.VehiculoTestDataBuilder;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class VigilanteParqueaderoTest {
-	
-	private static final String TIPO_VEHICULO_CARRO = "CARRO";
-	private static final String TIPO_VEHICULO_MOTO = "MOTO";
-	
-	private static final String PLACA_CARRO_INICIA_CON_A = "AAA545";
-	
-	private static final String FORMATO_FECHA = "yyyy-MM-dd HH:mm:ss";
-	
-	private static final String FECHA_INGRESO_NO_LUNES_NO_DOMINGO = "2018-05-09 08:00:00";
-	
-	private static final String MENSAJE_NO_DISPONIBILIDAD_PARQUEO = "No hay mas capacidad en el paqueadero";
+		
 	
 	@Autowired
 	@Qualifier("movimientoParqueaderoService")
@@ -63,9 +53,7 @@ public class VigilanteParqueaderoTest {
 		movimientoParqueaderoRepository = Mockito.mock(MovimientoParqueaderoRepository.class);
 		vigilanteController = Mockito.mock(VigilanteController.class);
 
-	}
-
-	
+	}	
 	
 	
 	@Test
@@ -77,11 +65,11 @@ public class VigilanteParqueaderoTest {
 				
 		try {
 			
-			Mockito.doThrow(new MovimientoParqueaderoException(MENSAJE_NO_DISPONIBILIDAD_PARQUEO))
+			Mockito.doThrow(new MovimientoParqueaderoException(MovimientoParqueaderoConstant.MENSAJE_NO_DISPONIBILIDAD_PARQUEO))
 				.when(movimientoParqueaderoService)
 				.verificarDisponibilidadParqueaderos(MovimientoParqueaderoConstant.TIPO_VEHICULO_CARRO);
 			
-			movimientoParqueaderoService.verificarDisponibilidadParqueaderos(TIPO_VEHICULO_CARRO);
+			movimientoParqueaderoService.verificarDisponibilidadParqueaderos(MovimientoParqueaderoConstant.TIPO_VEHICULO_CARRO);
 			fail();
 			
 			
@@ -102,7 +90,7 @@ public class VigilanteParqueaderoTest {
 				
 		try {
 			
-			Mockito.doThrow(new MovimientoParqueaderoException(MENSAJE_NO_DISPONIBILIDAD_PARQUEO))
+			Mockito.doThrow(new MovimientoParqueaderoException(MovimientoParqueaderoConstant.MENSAJE_NO_DISPONIBILIDAD_PARQUEO))
 			.when(movimientoParqueaderoService)
 				.verificarDisponibilidadParqueaderos(MovimientoParqueaderoConstant.TIPO_VEHICULO_MOTO);
 			
@@ -128,15 +116,15 @@ public class VigilanteParqueaderoTest {
 				
 		try {
 						
-			Mockito.when(movimientoParqueaderoRepository.countVehiculos(TIPO_VEHICULO_CARRO)).thenReturn(20);
+			Mockito.when(movimientoParqueaderoRepository.countVehiculos(MovimientoParqueaderoConstant.TIPO_VEHICULO_CARRO)).thenReturn(20);
 			
-			cantidadCarros = movimientoParqueaderoRepository.countVehiculos(TIPO_VEHICULO_CARRO);
+			cantidadCarros = movimientoParqueaderoRepository.countVehiculos(MovimientoParqueaderoConstant.TIPO_VEHICULO_CARRO);
 			
-			Mockito.doThrow(new MovimientoParqueaderoException(MENSAJE_NO_DISPONIBILIDAD_PARQUEO))
+			Mockito.doThrow(new MovimientoParqueaderoException(MovimientoParqueaderoConstant.MENSAJE_NO_DISPONIBILIDAD_PARQUEO))
 				.when(movimientoParqueaderoService)
 				.verificarDisponibilidadParqueaderos(MovimientoParqueaderoConstant.TIPO_VEHICULO_CARRO);
 			
-			movimientoParqueaderoService.verificarDisponibilidadParqueaderos(TIPO_VEHICULO_CARRO);
+			movimientoParqueaderoService.verificarDisponibilidadParqueaderos(MovimientoParqueaderoConstant.TIPO_VEHICULO_CARRO);
 			
 			fail();
 			
@@ -163,13 +151,13 @@ public class VigilanteParqueaderoTest {
 				
 		try {
 			
-			Mockito.when(movimientoParqueaderoRepository.countVehiculos(TIPO_VEHICULO_MOTO)).thenReturn(10);
+			Mockito.when(movimientoParqueaderoRepository.countVehiculos(MovimientoParqueaderoConstant.TIPO_VEHICULO_MOTO)).thenReturn(10);
 			
-			Mockito.doThrow(new MovimientoParqueaderoException(MENSAJE_NO_DISPONIBILIDAD_PARQUEO))
+			Mockito.doThrow(new MovimientoParqueaderoException(MovimientoParqueaderoConstant.MENSAJE_NO_DISPONIBILIDAD_PARQUEO))
 			.when(movimientoParqueaderoService)
 				.verificarDisponibilidadParqueaderos(MovimientoParqueaderoConstant.TIPO_VEHICULO_MOTO);
 			
-			cantidadMotos = movimientoParqueaderoRepository.countVehiculos(TIPO_VEHICULO_MOTO);
+			cantidadMotos = movimientoParqueaderoRepository.countVehiculos(MovimientoParqueaderoConstant.TIPO_VEHICULO_MOTO);
 			
 			movimientoParqueaderoService.verificarDisponibilidadParqueaderos(MovimientoParqueaderoConstant.TIPO_VEHICULO_MOTO);
 			
@@ -189,11 +177,11 @@ public class VigilanteParqueaderoTest {
 		
 		//Arrange
 		
-		Vehiculo vehiculo = new VehiculoTestDataBuilder().withTipoVehiculo(TIPO_VEHICULO_CARRO).withPlaca(PLACA_CARRO_INICIA_CON_A).build();
+		Vehiculo vehiculo = new VehiculoTestDataBuilder().withTipoVehiculo(MovimientoParqueaderoConstant.TIPO_VEHICULO_CARRO).withPlaca(MovimientoParqueaderoConstant.PLACA_CARRO_INICIA_CON_A).build();
 		
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(FORMATO_FECHA);
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(MovimientoParqueaderoConstant.FORMATO_FECHA);
 
-		LocalDateTime fechaIngreso = LocalDateTime.parse(FECHA_INGRESO_NO_LUNES_NO_DOMINGO, dateTimeFormatter);	
+		LocalDateTime fechaIngreso = LocalDateTime.parse(MovimientoParqueaderoConstant.FECHA_INGRESO_NO_LUNES_NO_DOMINGO, dateTimeFormatter);	
 		
 		MovimientoParqueadero parqueo = new MovimientoParqueaderoTestDataBuilder().withVehiculo(vehiculo).withFechaIngreso(fechaIngreso).build();
 		
@@ -223,11 +211,11 @@ public class VigilanteParqueaderoTest {
 		
 		//Arrange
 		
-		Vehiculo vehiculo = new VehiculoTestDataBuilder().withTipoVehiculo(TIPO_VEHICULO_MOTO).withPlaca(PLACA_CARRO_INICIA_CON_A).build();
+		Vehiculo vehiculo = new VehiculoTestDataBuilder().withTipoVehiculo(MovimientoParqueaderoConstant.TIPO_VEHICULO_MOTO).withPlaca(MovimientoParqueaderoConstant.PLACA_CARRO_INICIA_CON_A).build();
 		
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(FORMATO_FECHA);
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(MovimientoParqueaderoConstant.FORMATO_FECHA);
 
-		LocalDateTime fechaIngreso = LocalDateTime.parse(FECHA_INGRESO_NO_LUNES_NO_DOMINGO, dateTimeFormatter);	
+		LocalDateTime fechaIngreso = LocalDateTime.parse(MovimientoParqueaderoConstant.FECHA_INGRESO_NO_LUNES_NO_DOMINGO, dateTimeFormatter);	
 		
 		MovimientoParqueadero parqueo = new MovimientoParqueaderoTestDataBuilder().withVehiculo(vehiculo).withFechaIngreso(fechaIngreso).build();
 		
