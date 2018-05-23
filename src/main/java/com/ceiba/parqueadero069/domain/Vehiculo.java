@@ -2,7 +2,7 @@ package com.ceiba.parqueadero069.domain;
 
 public class Vehiculo {
 	
-	private Integer idVehículo;
+	private Integer idVehiculo;
 	private String tipoVehiculo;
 	private String placa;
 	private Integer cilindraje;	
@@ -20,11 +20,11 @@ public class Vehiculo {
 	}	
 
 	public Integer getIdVehículo() {
-		return idVehículo;
+		return idVehiculo;
 	}
 
 	public void setIdVehículo(Integer idVehículo) {
-		this.idVehículo = idVehículo;
+		this.idVehiculo = idVehículo;
 	}
 
 	public String getTipoVehiculo() {
