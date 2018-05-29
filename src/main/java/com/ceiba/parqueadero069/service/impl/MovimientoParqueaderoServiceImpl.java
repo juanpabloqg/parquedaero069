@@ -65,15 +65,23 @@ public class MovimientoParqueaderoServiceImpl implements MovimientoParqueaderoSe
 	public void verificarDisponibilidadParqueaderos(String tipoVehiculo) {
 		
 		
-		if (tipoVehiculo.equals(MovimientoParqueaderoConstant.TIPO_VEHICULO_CARRO)) {
+		if (esCarro(tipoVehiculo)) {
 			
 			contarVehiculos(tipoVehiculo, MovimientoParqueaderoConstant.CAPACIDAD_MAXIMA_CARRO);
 			
-		} else if (tipoVehiculo.equals(MovimientoParqueaderoConstant.TIPO_VEHICULO_MOTO)) {
+		} else if (esMoto(tipoVehiculo)) {
 			
 			contarVehiculos(tipoVehiculo, MovimientoParqueaderoConstant.CAPACIDAD_MAXIMA_MOTOS);
 		}		
 		
+	}
+
+	private boolean esMoto(String tipoVehiculo) {
+		return tipoVehiculo.equals(MovimientoParqueaderoConstant.TIPO_VEHICULO_MOTO);
+	}
+
+	private boolean esCarro(String tipoVehiculo) {
+		return tipoVehiculo.equals(MovimientoParqueaderoConstant.TIPO_VEHICULO_CARRO);
 	}
 	
 	public void contarVehiculos(String tipoVehiculo, Integer capacidadMaxima) {
@@ -121,11 +129,15 @@ public class MovimientoParqueaderoServiceImpl implements MovimientoParqueaderoSe
 	@Override
 	public void verificarDisponibilidadPorInicioLetrasPlaca(MovimientoParqueadero movimientoParqueadero) {
 
-		if (movimientoParqueadero.getVehiculo().getPlaca().charAt(0) == 'A' && !esDomingoLunes(movimientoParqueadero) ) {
+		if (extraerPrimerLetraPlaca(movimientoParqueadero) == 'A' && !esDomingoLunes(movimientoParqueadero) ) {
 			throw new MovimientoParqueaderoException(
 					MovimientoParqueaderoConstant.MENSAJE_ERROR_INGRESO_VEHICULO_PLACA_INICIA_A);
 		}
 
+	}
+
+	private char extraerPrimerLetraPlaca(MovimientoParqueadero movimientoParqueadero) {
+		return movimientoParqueadero.getVehiculo().getPlaca().charAt(0);
 	}
 
 	private boolean esDomingoLunes(MovimientoParqueadero movimientoParqueadero) {
@@ -170,7 +182,7 @@ public class MovimientoParqueaderoServiceImpl implements MovimientoParqueaderoSe
 
 	private BigDecimal cobrarPorHoras(String tipoVehiculo, double cantidadHorasParqueado) {
 		
-		if(tipoVehiculo.equals(MovimientoParqueaderoConstant.TIPO_VEHICULO_CARRO)) {
+		if(esCarro(tipoVehiculo)) {
 			return  calculaHoraPorTipoVehiculo(cantidadHorasParqueado, MovimientoParqueaderoConstant.VALOR_CARRO_HORA);
 			
 		}else {
